@@ -1,7 +1,4 @@
-# TP PHP MVC
-
-## Basé sur le [document](http://bpesquet.developpez.com/tutoriels/php/evoluer-architecture-mvc/) et le [dépôt](http://github.com/bpesquet/MonBlog) de [Baptiste Pesquet](https://github.com/bpesquet)
-
+# Convocations Sportives MVC
 
 ## Installation
 
@@ -21,7 +18,8 @@ MariaDB [(none)]> exit;
 Bye
 [blog_mvc_objet]$ mariadb -u etudiant -p convocation < BD/convocation.sql 
 Enter password: 
-[blog_mvc_objet]$
+[blog_mvc_objet]$ mariadb -u etudiant -p convocation < BD/insert.sql 
+Enter password:
 ```
 
-- Visiter la [page d'accueil](http://localhost/devweb/PROJET/blog_mvc_objet/index.php)
+- Visiter la [page d'accueil](http://localhost/devweb/PROJET/Convocations_sportives_MVC/index.php)

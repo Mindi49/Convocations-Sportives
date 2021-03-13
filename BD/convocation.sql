@@ -53,7 +53,7 @@ CREATE TABLE T_JOUEUR (
 	IdJoueur int NOT NULL AUTO_INCREMENT,
     Nom VARCHAR(30) NOT NULL,
     Prenom VARCHAR(30) NOT NULL,
-    Categorie VARCHAR(50) NOT NULL,
+    Categorie VARCHAR(50),
     Licencie CHAR(3) DEFAULT 'non' CHECK (Licencie IN ('oui','non')),
     PRIMARY KEY (IdJoueur),
     FOREIGN KEY (Categorie) REFERENCES T_CATEGORIE(Nom) ON DELETE SET NULL

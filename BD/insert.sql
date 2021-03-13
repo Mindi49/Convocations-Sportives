@@ -17,14 +17,14 @@ INSERT INTO T_UTILISATEUR VALUES
 
 INSERT INTO T_CATEGORIE VALUES
 ('SENIOR'),
-('JUNIOR NON UTILISEE');
+('JUNIOR NON UTILISEE'),
 ('CADET NON UTILISEE');
 
 INSERT INTO T_COMPETITION VALUES
 ('Amical'),
 ('Coupe de France'),
 ('Coupe de l''Anjou'),
-('Coupe des Pays de la Loire');
+('Coupe des Pays de la Loire'),
 ('Coupe du Monde');
 
 INSERT INTO T_EQUIPE VALUES
