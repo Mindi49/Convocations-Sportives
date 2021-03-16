@@ -133,6 +133,10 @@ class Routeur {
                         $this->ctrlConvocation->ajouterConvocation($numMatch,$idJoueur);
                     }
                 }
+                else if ($_GET['action'] == 'publier') {
+                    $numConvocation = $this->getParametre($_POST,'num');
+                    $this->ctrlConvocation->publier($numConvocation);
+                }
                 else
                     throw new Exception("Action non valide");
             }

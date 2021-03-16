@@ -15,7 +15,7 @@ class Convocation extends Modele {
     public function getConvocationsPubliees() {
         $sql = 'SELECT C.NumConvoc as NumConvoc, M.Categorie as Categorie, Competition,'
             . ' Equipe, EquipeAdverse, Date, Heure, Terrain, Site, J.IdJoueur as IdJoueur, Nom, Prenom, Licencie'
-            . ' FROM (T_CONVOCATION C JOIN T_MATCH M ON C.NumMatch = M.NumMatch) JOIN T_JOUEUR J ON C.IdJoueur = J.IdJoueur WHERE Licencie = "oui"';
+            . ' FROM (T_CONVOCATION C JOIN T_MATCH M ON C.NumMatch = M.NumMatch) JOIN T_JOUEUR J ON C.IdJoueur = J.IdJoueur WHERE Publie = TRUE';
         $convocationsMatch = $this->executerRequete($sql);
         return $convocationsMatch->fetchAll();
     }
@@ -55,7 +55,7 @@ class Convocation extends Modele {
 
     public function publier($numConvoc) {
         $sql = 'UPDATE T_CONVOCATION'
-            . ' SET Publier = "oui"'
+            . ' SET Publie = TRUE'
             . ' WHERE NumConvoc = ?';
         $this->executerRequete($sql, array($numConvoc));
     }

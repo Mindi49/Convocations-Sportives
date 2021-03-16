@@ -46,4 +46,9 @@ class ControleurConvocation {
         $this->convocation->supprimerConvocationsJoueur($idJoueur);
         header("Location:index.php?action=convocation");
     }
+
+    public function publier($numConvocation) {
+        $this->convocation->publier($numConvocation);
+        header("Location:index.php?action=convocation");
+    }
 }

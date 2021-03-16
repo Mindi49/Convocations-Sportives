@@ -38,31 +38,31 @@ class ControleurAccueil {
 
 
     public function supprimerCategorie($nom) {
-        $this->match->supprimerCategorie($nom);
+        $this->categorie->supprimerCategorie($nom);
         header("Location:index.php");
     }
     public function ajouterCategorie($nom) {
-        $this->match->ajouterCategorie($nom);
+        $this->categorie->ajouterCategorie($nom);
         header("Location:index.php");
     }
 
 
     public function supprimerCompetition($nom) {
-        $this->match->supprimerCompetition($nom);
+        $this->competition->supprimerCompetition($nom);
         header("Location:index.php");
     }
     public function ajouterCompetition($nom) {
-        $this->match->ajouterCompetition($nom);
+        $this->competition->ajouterCompetition($nom);
         header("Location:index.php");
     }
 
 
     public function supprimerEquipe($nom) {
-        $this->match->supprimerEquipe($nom);
+        $this->equipe->supprimerEquipe($nom);
         header("Location:index.php");
     }
     public function ajouterEquipe($nom) {
-        $this->match->ajouterEquipe($nom);
+        $this->equipe->ajouterEquipe($nom);
         header("Location:index.php");
     }
 
