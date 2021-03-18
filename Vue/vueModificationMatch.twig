@@ -1,0 +1,87 @@
+{% extends "gabarit.twig" %}
+
+{% block title %}
+Convocations sportives
+{% endblock %}
+
+{% block contenu %}
+
+<div class="row pt-5">
+    <h1>Modifier un Match</h1>
+    <form method="post" action="index.php?action=modifierMatch">
+        <div class="form-group row pt-2">
+            <label for="categorieMatch" class="col-3 col-form-label">Catégorie : </label>
+            <div class="col-6">
+                <select name="categorie" id="categorieMatch" class="form-select">
+                    {% for categorie in categories %}
+                        <option value="{{ categorie['Nom'] }}" {% if match['Categorie'] == categorie['Nom'] %} selected {% endif %}> {{ categorie['Nom'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group row pt-2">
+            <label for="competitionMatch" class="col-3 col-form-label">Compétition : </label>
+            <div class="col-6">
+                <select name="competition" id="competitionMatch" class="form-select">
+                    {% for competition in competitions %}
+                        <option value="{{ competition['Nom'] }}" {% if match['Competition'] == competition['Nom'] %} selected {% endif %}> {{ competition['Nom'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group row pt-2">
+            <label for="equipeMatch" class="col-3 col-form-label">Equipe : </label>
+            <div class="col-6">
+                <select name="equipe" id="equipeMatch" class="form-select">
+                    {% for equipe in equipes %}
+                        <option value="{{ equipe['Nom'] }}" {% if match['Equipe'] == equipe['Nom'] %} selected {% endif %}> {{ equipe['Nom'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row pt-2">
+            <label for="equipeAdvMatch" class="col-3 col-form-label">Equipe adverse : </label>
+            <div class="col-6">
+                <input type="text" name="equipeadv" id="equipeAdvMatch" class="form-control" value="{{ match['EquipeAdverse'] }}">
+            </div>
+        </div>
+        <div class="form-group row pt-2">
+            <label for="dateCompetition" class="col-3 col-form-label">Date de la compétition : </label>
+            <div class="col-6">
+                <input type="date" name="date" id="dateCompetition" class="form-control" value="{{ match['Date'] }}" required>
+            </div>
+        </div>
+
+        <div class="form-group row pt-2">
+            <label for="heureCompetition" class="col-3 col-form-label">Heure de la compétition : </label>
+            <div class="col-6">
+                <input type="time" name="heure" id="heureCompetition" class="form-control" value="{{ match['Heure'] }}" required>
+            </div>
+        </div>
+
+        <div class="form-group row pt-2">
+            <label for="terrain" class="col-3 col-form-label">Terrain : </label>
+            <div class="col-6">
+                <input type="text" id="terrain" name="terrain" size="12" class="form-control" value="{{ match['Terrain'] }}">
+            </div>
+        </div>
+
+        <div class="form-group row pt-2">
+            <label for="site" class="col-3 col-form-label">Site : </label>
+            <div class="col-6">
+                <input type="text" id="site" name="site" size="12" class="form-control" value="{{ match['Site'] }}">
+            </div>
+        </div>
+
+        <input type="hidden" name="num" value="{{ match['NumMatch'] }}" />
+
+        <button type="submit" class="btn btn-primary col-2 mt-2">Confirmer</button>
+    </form>
+</div>
+<div class="row my-2">
+    <form method="post" action="index.php?action=match">
+        <button type="submit" class="btn btn-danger">Annuler la modification</button>
+    </form>
+</div>
+{% endblock %}

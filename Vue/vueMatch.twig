@@ -1,3 +1,10 @@
+{% extends "gabarit.twig" %}
+
+{% block title %}
+Convocations sportives
+{% endblock %}
+
+{% block contenu %}
 <!---------------------- MATCHS ---------------------->
 
 <div class="row pt-5">
@@ -15,35 +22,39 @@
                     <th>Terrain</th>
                     <th>Site</th>
                     <th>Supprimer</th>
-                    <th>ModifiervueMatch.php</th>
+                    <th>Modifier</th>
                 </tr>
             </thead>
             <tbody>
 
-            <?php foreach ($matchs as $match): ?>
+            {% for match in matchs %}
                 <tr>
-                    <td><?= $match['Categorie'] ?></td>
-                    <td><?= $match['Competition'] ?></td>
-                    <td><?= $match['Equipe'] ?></td>
-                    <td><?= $match['EquipeAdverse'] ?></td>
-                    <td><?= $match['Date'] ?></td>
-                    <td><?= $match['Heure'] ?></td>
-                    <td><?= $match['Terrain'] ?></td>
-                    <td><?= $match['Site'] ?></td>
+                    <td>{{ match['Categorie'] }}</td>
+                    <td>{{ match['Competition'] }}</td>
+                    <td>{{ match['Equipe'] }}</td>
+                    <td>{{ match['EquipeAdverse'] }}</td>
+                    <td>{{ match['Date'] }}</td>
+                    <td>{{ match['Heure'] }}</td>
+                    <td>{{ match['Terrain'] }}</td>
+                    <td>{{ match['Site'] }}</td>
                     <td><form method="post" action="index.php?action=supprimerMatch">
-                            <input type="hidden" name="num" value="<?= $match['NumMatch'] ?>" />
+                            <input type="hidden" name="num" value="{{ match['NumMatch'] }}" />
                             <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i></button>
                         </form></td>
-                    <td><form method="post" action="index.php?action=modifierMatch">
-                            <input type="hidden" name="num" value="<?= $match['NumMatch'] ?>" />
+                    <td><form method="post" action="index.php?action=accesModifierMatch&num={{ match['NumMatch'] }}">
                             <button type="submit" class="btn btn-secondary"><i class="fa fa-pen"></i></button>
                         </form></td>
                 </tr>
-            <?php endforeach; ?>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun match programmé</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
 
 <div class="row pt-5">
     <h1>Programmer un Match</h1>
@@ -52,9 +63,9 @@
             <label for="categorieMatch" class="col-3 col-form-label">Catégorie : </label>
             <div class="col-6">
                 <select name="categorie" id="categorieMatch" class="form-select">
-                    <?php foreach ($categories as $categorie): ?>
-                        <option value="<?=$categorie['Nom']?>"><?=$categorie['Nom']?></option>
-                    <?php endforeach;?>
+                    {% for categorie in categories %}
+                        <option value="{{ categorie['Nom'] }}">{{ categorie['Nom'] }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -62,9 +73,9 @@
             <label for="competitionMatch" class="col-3 col-form-label">Compétition : </label>
             <div class="col-6">
                 <select name="competition" id="competitionMatch" class="form-select">
-                    <?php foreach ($competitions as $competition): ?>
-                        <option value="<?=$competition['Nom']?>"><?=$competition['Nom']?></option>
-                    <?php endforeach;?>
+                    {% for competition in competitions %}
+                        <option value="{{ competition['Nom'] }}">{{ competition['Nom'] }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -72,9 +83,9 @@
             <label for="equipeMatch" class="col-3 col-form-label">Equipe : </label>
             <div class="col-6">
                 <select name="equipe" id="equipeMatch" class="form-select">
-                    <?php foreach ($equipes as $equipe): ?>
-                        <option value="<?=$equipe['Nom']?>"><?=$equipe['Nom']?></option>
-                    <?php endforeach;?>
+                    {% for equipe in equipes %}
+                        <option value="{{ equipe['Nom'] }}">{{ equipe['Nom'] }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -119,3 +130,5 @@
         </div>
     </form>
 </div>
+
+{% endblock %}

@@ -1,6 +1,10 @@
+{% extends "gabarit.twig" %}
 
-<?php $this->titre = "Convocations sportives"; ?>
+{% block title %}
+Convocations sportives
+{% endblock %}
 
+{% block contenu %}
 <!---------------------- CONVOCATION ---------------------->
 
 <!-- voir la liste des convocs pour un match (tous les joueurs qui sont convoqués) -->
@@ -11,18 +15,22 @@
         <h1>Convocations par match</h1>
         <table class="table border table-striped table-hover">
             <tbody>
-                <?php foreach ($convocations as $convocation): ?>
+                {% for convocation in convocations %}
                     <tr>
-                        <td><?= $convocation['Competition'] ?> - <?= $convocation['Equipe'] ?> (le <?= $convocation['Date'] ?>)</td>
+                        <td>{{ convocation['Competition'] }} - {{ convocation['Equipe'] }} (le {{ convocation['Date'] }})</td>
                         <td><form method="post" action="index.php?action=supprimerConvocation">
-                                <input type="hidden" name="num" value="<?= $convocation['NumConvoc'] ?>" />
+                                <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
                                 <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button></form></td>
                         <td><form method="post" action="index.php?action=publier">
-                            <input type="hidden" name="num" value="<?= $convocation['NumConvoc'] ?>" />
+                            <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
                             <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button></form></td>
 
                     </tr>
-                <?php endforeach; ?>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun convocation en cours</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -32,14 +40,18 @@
     <div class="col">
         <h1>Convocations Publiées</h1>
         <table class="table border table-striped table-hover">
-            <?php foreach ($convocationsPubliees as $convocationPubliee): ?>
+            {% for convocationsPubliee in convocationPubliees %}
                 <tr>
-                    <td><?= $convocationPubliee['Competition'] ?> - <?= $convocationPubliee['Equipe'] ?> (le <?= $convocationPubliee['Date'] ?>)</td>
+                    <td>{{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date'] }})</td>
                     <td><form method="post" action="index.php?action=depublier">
-                            <input type="hidden" name="num" value="<?= $convocationPubliee['NumConvoc'] ?>" />
+                            <input type="hidden" name="num" value="{{ convocationPubliee['NumConvoc'] }}" />
                             <button type="submit" class="btn btn-danger"><i class="fa fa-eye-slash"></i></button></form></td>
                 </tr>
-            <?php endforeach; ?>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucune convocation publiée</td>
+                    </tr>
+            {% endfor %}
         </table>
     </div>
 </div>
@@ -53,9 +65,9 @@
                 <label for="convocationsJoueur" class="col-2 col-form-label"> Joueur : </label>
                 <div class="col">
                     <select name="idJoueur" id="convocationsMatchJoueur" class="form-select">
-                    <?php foreach ($joueurs as $joueur): ?>
-                        <option value="<?=$joueur['IdJoueur']?>"><?=$joueur['Nom']?> <?=$joueur['Prenom']?></option>
-                    <?php endforeach;?>
+                    {% for joueur in joueurs %}
+                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Nom'] }} {{ joueur['Prenom'] }}</option>
+                    {% endfor %}
                     </select>
                 </div>
             </div>
@@ -74,51 +86,35 @@
             <label for="convocationMatch" class="col-1 col-form-label">Match : </label>
             <div class="col-7">
                 <select name="num" id="convocationMatch" class="form-select">
-                <?php foreach ($matchs as $match): ?>
-                    <option value="<?=$match['NumMatch']?>"><?=$match['Competition']?> - <?=$match['Equipe']?> le <?=$match['Date']?></option>
-                <?php endforeach;?>
+                {% for match in matchs %}
+                    <option value="{{ match['NumMatch'] }}">{{ match['Competition'] }} - {{ match['Equipe'] }} le {{ match['Date'] }}</option>
+                {% endfor %}
                 </select>
             </div>
         </div>
         <!-- afficher le détail du match selectionné -->
 
-        <?php for($i = 1; $i <= 11; $i++) : ?>
+        {% for i in 1..14 %}
             <div class="form-group row">
                 <div class="input-group mb-2">
                     <div class="input-group-prepend col-1">
-                        <label for="convocationJoueur<?=$i?>" class="input-group-text">Joueur <?=$i?> </label>
+                        <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
                     </div>
                     <div class="col-4">
-                        <select name="idJoueur<?=$i?>" id="convocationJoueur<?=$i?>" class="form-select" required>
+                        <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
                             <option value="" selected>choix</option>
-                            <?php foreach ($joueurs as $joueur): ?>
-                                <option value="<?=$joueur['IdJoueur']?>"><?=$joueur['Nom']?>  <?=$joueur['Prenom']?></option>
-                            <?php endforeach;?>
+                        {% for joueur in joueurs %}
+                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Nom'] }} {{ joueur['Prenom'] }}</option>
+                        {% endfor %}
                         </select>
                     </div>
                 </div>
             </div>
-        <?php endfor;?>
+        {% endfor %}
 
-
-        <?php for($i = 12; $i <= 14; $i++) : ?>
-            <div class="form-group row">
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend col-1">
-                        <label for="convocationJoueur<?=$i?>" c class="input-group-text">Joueur <?=$i?></label>
-                    </div>
-                    <div class="col-4">
-                        <select name="idJoueur<?=$i?>" id="convocationJoueur<?=$i?>" class="form-select">
-                            <option value="" selected>choix</option>
-                            <?php foreach ($joueurs as $joueur): ?>
-                                <option value="<?=$joueur['IdJoueur']?>"><?=$joueur['Nom']?>  <?=$joueur['Prenom']?></option>
-                            <?php endforeach;?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        <?php endfor;?>
         <div class="form-group row justify-content-center mt-2">
             <button type="submit" class="btn btn-primary col-3">Ajouter</button>
-        </div>    </form>
+        </div>
+    </form>
 </div>
+{% endblock %}

@@ -1,6 +1,10 @@
+{% extends "gabarit.twig" %}
 
-<?php $this->titre = "Convocations sportives"; ?>
+{% block title %}
+    Convocations sportives
+{% endblock %}
 
+{% block contenu %}
 <!---------------------- CATEGORIES ---------------------->
 <!--
 <div class="row pt-5">
@@ -147,15 +151,17 @@
     <h1>Convocations Publiées</h1>
     <div class="col-6">
         <table class="table border table-striped table-hover">
-            <?php foreach ($convocationsPubliees as $convocationPubliee): ?>
+
+            {% for convocationPubliee in convocationsPubliees %}
                 <tr>
-                    <td><?= $convocationPubliee['Competition'] ?> - <?= $convocationPubliee['Equipe'] ?> (le <?= $convocationPubliee['Date'] ?>)</td>
+                    <td>{{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date'] }})</td>
                 </tr>
-            <?php endforeach; ?>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucune Convocation</td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
 </div>
-
-
-
-
+{% endblock %}

@@ -1,5 +1,10 @@
-<?php $this->titre = "Convocations sportives"; ?>
+{% extends "gabarit.twig" %}
 
+{% block title %}
+Convocations sportives
+{% endblock %}
+
+{% block contenu %}
 <div class="row mt-5">
     <div class="col-6">
         <h1>Se connecter</h1>
@@ -36,12 +41,16 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($utilisateurs as $utilisateur): ?>
+            {% for utilisateur in utilisateurs %}
                 <tr>
-                    <td><?= $utilisateur['NomUtilisateur'] ?></td>
-                    <td><?= $utilisateur['Role'] ?></td>
+                    <td>{{ utilisateur['NomUtilisateur'] }}</td>
+                    <td>{{ utilisateur['Role'] }}</td>
                 </tr>
-            <?php endforeach; ?>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun utilisateur n'est inscrit</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -96,3 +105,5 @@
         </div>
     </div>
 </div>
+
+{% endblock %}

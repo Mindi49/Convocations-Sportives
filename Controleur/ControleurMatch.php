@@ -43,8 +43,11 @@ class ControleurMatch
 
     public function accesModifierMatch($numMatch) {
         $match = $this->match->getMatch($numMatch);
+        $categories = $this->categorie->getCategories();
+        $competitions = $this->competition->getCompetitions();
+        $equipes = $this->equipe->getEquipes();
         $vue = new Vue("ModificationMatch");
-        $vue->generer(array('match' => $match));
+        $vue->generer(array('match' => $match,'categories' => $categories, 'competitions' => $competitions, 'equipes' => $equipes));
     }
 
     public function modifierMatch($numMatch, $categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site) {

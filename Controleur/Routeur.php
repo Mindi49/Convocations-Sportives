@@ -117,7 +117,7 @@ class Routeur {
                     $this->ctrlMatch->modifierMatch($numMatch, $categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site);
                 }
                 else if ($_GET['action'] == 'accesModifierMatch') {
-                    $numMatch = $this->getParametre($_POST, 'num');
+                    $numMatch = $this->getParametre($_GET, 'num');
                     $this->ctrlMatch->accesModifierMatch($numMatch);
                 }
                 // ABSENCE - Absence

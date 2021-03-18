@@ -1,6 +1,10 @@
+{% extends "gabarit.twig" %}
 
-<?php $this->titre = "Convocations sportives"; ?>
+{% block title %}
+Convocations sportives
+{% endblock %}
 
+{% block contenu %}
 <!---------------------- ABSENCES ---------------------->
 <div class="row pt-5">
     <div class="col-6">
@@ -16,20 +20,25 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($absences as $absence): ?>
+
+                {% for absence in absences %}
                 <tr>
-                    <td><?= $absence['Nom'] ?></td>
-                    <td><?= $absence['Prenom'] ?></td>
-                    <td><?= $absence['Date'] ?></td>
-                    <td><?= $absence['Motif'] ?></td>
+                    <td>{{ absence['Nom'] }}</td>
+                    <td>{{ absence['Prenom'] }}</td>
+                    <td>{{ absence['Date'] }}</td>
+                    <td>{{ absence['Motif'] }}</td>
                     <td><form method="post" action="index.php?action=supprimerAbsence">
-                            <input type="hidden" name="idJoueur" value="<?= $absence['IdJoueur'] ?>" />
-                            <input type="hidden" name="date" value="<?= $absence['Date'] ?>" />
+                            <input type="hidden" name="idJoueur" value="{{ absence['IdJoueur'] }}" />
+                            <input type="hidden" name="date" value="{{ absence['Date'] }}" />
                             <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button>
                         </form>
 
                 </tr>
-                <?php endforeach; ?>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun absent pour le moment</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -41,9 +50,9 @@
                 <label for="joueursAbs" class="col-4 col-form-label">Joueur : </label>
                 <div class="col">
                     <select name="idJoueur" id="joueursAbs" class="form-select">
-                        <?php foreach ($joueurs as $joueur): ?>
-                            <option value="<?=$joueur['IdJoueur']?>"><?=$joueur['Nom'] . " " .$joueur['Prenom']?></option>
-                        <?php endforeach;?>
+                        {% for joueur in joueurs %}
+                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Nom'] }} {{ joueur['Prenom'] }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -81,3 +90,4 @@
         </form>
     </div>
 </div>
+{% endblock %}

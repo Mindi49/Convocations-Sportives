@@ -7,7 +7,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
     <link rel="stylesheet" href="Contenu/style.css">
-    <title><?= $titre ?></title>
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #001D6E">
@@ -40,7 +40,7 @@
     </nav>
 
     <div class="container">
-        <?= $contenu ?>
+        {% block contenu %}{% endblock %}
     </div>
     <!-- #contenu -->
     <footer>Site de gestion de convocations sportives réalisé avec PHP, HTML5 et CSS. </footer>

@@ -1,6 +1,10 @@
+{% extends "gabarit.twig" %}
 
-<?php $this->titre = "Convocations sportives"; ?>
+{% block title %}
+Convocations sportives
+{% endblock %}
 
+{% block contenu %}
 <!--<h1><a href="index.php?action=match">Liste des Matchs programmés</a></h1>-->
 <!--<h1><a href="index.php?action=convocation">Liste des Convocations</a></h1>-->
 <!--<h1><a href="index.php?action=absence">Liste des Absences</a></h1>-->
@@ -20,18 +24,22 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($joueurs as $joueur): ?>
+                {% for joueur in joueurs %}
                 <tr>
-                    <td><?= $joueur['Nom'] ?></td>
-                    <td><?= $joueur['Prenom'] ?></td>
-                    <td><?= $joueur['Categorie'] ?></td>
-                    <td><?= $joueur['Licencie'] ?></td>
+                    <td>{{ joueur['Nom'] }}</td>
+                    <td>{{ joueur['Prenom'] }}</td>
+                    <td>{{ joueur['Categorie'] }}</td>
+                    <td>{{ joueur['Licencie'] }}</td>
                     <td><form method="post" action="index.php?action=supprimerJoueur">
-                            <input type="hidden" name="idJoueur" value="<?= $joueur['IdJoueur'] ?>" />
+                            <input type="hidden" name="idJoueur" value="{{ joueur['IdJoueur'] }}" />
                             <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button>
                         </form></td>
                 </tr>
-                <?php endforeach; ?>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Aucun convocation en cours</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -48,13 +56,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($licencies as $licencie): ?>
+                    {% for licencie in licencies %}
                         <tr>
-                            <td><?= $licencie['Nom'] ?></td>
-                            <td><?= $licencie['Prenom'] ?></td>
-                            <td><?= $licencie['Categorie'] ?></td>
+                            <td>{{ licencie['Nom'] }}</td>
+                            <td>{{ licencie['Prenom'] }}</td>
+                            <td>{{ licencie['Categorie'] }}</td>
                         </tr>
-                    <?php endforeach; ?>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -64,9 +72,9 @@
                 <div class="form-group row">
                     <div class="col-6">
                         <select name="idJoueur" id="joueurLicence" class="form-select">
-                            <?php foreach ($nonlicencies as $nonlicencie): ?>
-                                <option value="<?=$nonlicencie['IdJoueur']?>"><?=$nonlicencie['Nom']?> <?=$nonlicencie['Prenom']?></option>
-                            <?php endforeach;?>
+                            {% for nonlicencie in nonlicencies %}
+                                <option value="{{ nonlicencie['IdJoueur'] }}">{{ nonlicencie['Nom'] }} {{ nonlicencie['Prenom'] }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="offset-1 col-5">
@@ -101,9 +109,9 @@
                 <label for="categorieJoueur" class="col-4 col-form-label">Categorie : </label>
                 <div class="col">
                     <select name="categorie" id="categorieJoueur" class="form-select" >
-                    <?php foreach ($categories as $categorie): ?>
-                        <option value="<?=$categorie['Nom']?>"><?=$categorie['Nom']?></option>
-                    <?php endforeach;?>
+                        {% for categorie in categories %}
+                            <option value="{{ categorie['Nom'] }}">{{ categorie['Nom'] }}</option>
+                        {% endfor %}
                 </select>
                 </div>
             </div>
@@ -126,10 +134,5 @@
         </form>
     </div>
 </div>
-
-
-
-
-
-
+{% endblock %}
 

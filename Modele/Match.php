@@ -7,7 +7,7 @@ class Match extends Modele {
     public function getMatch($numMatch) {
         $sql = 'SELECT *'
             . ' FROM T_MATCH'
-            . ' WHERE NumMatch = ?' ;
+            . ' WHERE NumMatch = ?' ;;
         $match = $this->executerRequete($sql, array($numMatch));
         if ($match->rowCount() > 0)
             return $match->fetch();  // Accès à la première ligne de résultat
@@ -37,8 +37,8 @@ class Match extends Modele {
     public function modifierMatch($numMatch, $categorie, $competition, $equipe, $equipeadverse, $date, $heure, $terrain, $site) {
         $sql = 'UPDATE T_MATCH'
             . ' SET Categorie = ?, Competition = ?, Equipe = ?,'
-            . ' EquipeAverse = ?, Date = ?, Heure = ?,'
-            . ' Terrain = ?, Site = ?, '
+            . ' EquipeAdverse = ?, Date = ?, Heure = ?,'
+            . ' Terrain = ?, Site = ? '
             . ' WHERE NumMatch = ?';
         $this->executerRequete($sql, array($categorie, $competition, $equipe, $equipeadverse, $date, $heure, $terrain, $site, $numMatch));
     }

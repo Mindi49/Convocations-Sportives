@@ -1,33 +1,35 @@
 <?php
 
+require_once __DIR__ . "/../vendor/autoload.php";
 class Vue
 {
 
     // Nom du fichier associé à la vue
     private $fichier;
 
-    // Titre de la vue (défini dans le fichier vue)
-    private $titre;
 
     public function __construct($action)
     {
         // Détermination du nom du fichier vue à partir de l'action
-        $this->fichier = "Vue/vue" . $action . ".php";
+        $this->fichier = "vue" . $action . ".twig";
     }
 
     // Génère et affiche la vue
-    public function generer($donnees)
-    {
-        // Génération de la partie spécifique de la vue
-        $contenu = $this->genererFichier($this->fichier, $donnees);
-        // Génération du gabarit commun utilisant la partie spécifique
-        $vue = $this->genererFichier('Vue/gabarit.php', array(
-            'titre' => $this->titre,
-            'contenu' => $contenu
-        ));
-        // Renvoi de la vue au navigateur
-        echo $vue;
-        //echo $contenu;
+    public function generer($donnees) {
+        $loader = new \Twig\Loader\FilesystemLoader('Vue');
+        $twig = new \Twig\Environment($loader);
+        $template = $twig->load($this->fichier);
+        echo $template->render($donnees);
+//        // Génération de la partie spécifique de la vue
+//        $contenu = $this->genererFichier($this->fichier, $donnees);
+//        // Génération du gabarit commun utilisant la partie spécifique
+//        $vue = $this->genererFichier('Vue/gabarit.twig', array(
+//            'titre' => $this->titre,
+//            'contenu' => $contenu
+//        ));
+//        // Renvoi de la vue au navigateur
+//        echo $vue;
+//        //echo $contenu;
     }
 
     // Génère un fichier vue et renvoie le résultat produit
