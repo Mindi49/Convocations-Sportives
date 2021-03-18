@@ -23,22 +23,21 @@ class ControleurConvocation {
         $matchs = $this->match->getMatchs();
         $joueurs = $this->joueur->getJoueurs();
         $vue = new Vue("Convocation");
-        $vue->generer(array('convocations' => $convocations, 'convocationsPubliees' => $convocationsPubliees, 'matchs' => $matchs, 'joueurs' => $joueurs));
+        $vue->generer(array('convocations' => $convocations, 'convocationsPubliees' => $convocationsPubliees, 'joueurs' => $joueurs, 'matchs' => $matchs));
     }
 
 
-    public function ajouterConvocation($numMatch,$idJoueur) {
-        $this->convocation->ajouterConvocation($numMatch,$idJoueur);
-        header("Location:index.php?action=convocation");
+    public function ajouterConvocation($numMatch) {
+        return $this->convocation->ajouterConvocation($numMatch);
+    }
+
+    public function ajouterJoueurConvoque ($numConvocation,$idJoueur) {
+        return $this->convocation->ajouterJoueurConvoque($numConvocation,$idJoueur);
     }
 
     public function supprimerConvocation($numConvocation) {
+        $this->convocation->supprimerJoueursConvoques($numConvocation);
         $this->convocation->supprimerConvocation($numConvocation);
-        header("Location:index.php?action=convocation");
-    }
-
-    public function supprimerConvocationsMatch($numMatch) {
-        $this->convocation->supprimerConvocationsMatch($numMatch);
         header("Location:index.php?action=convocation");
     }
 
@@ -47,8 +46,17 @@ class ControleurConvocation {
         header("Location:index.php?action=convocation");
     }
 
+    public function supprimerJoueurConvoque($numConvocation,$idJoueur) {
+        $this->convocation->supprimerJoueurConvoque($numConvocation,$idJoueur);
+        header("Location:index.php?action=convocation");
+    }
+
     public function publier($numConvocation) {
         $this->convocation->publier($numConvocation);
+        header("Location:index.php?action=convocation");
+    }
+    public function depublier($numConvocation) {
+        $this->convocation->depublier($numConvocation);
         header("Location:index.php?action=convocation");
     }
 }

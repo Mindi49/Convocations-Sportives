@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
           rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+    <link rel="stylesheet" href="Contenu/style.css">
     <title><?= $titre ?></title>
 </head>
 <body>
@@ -33,7 +34,7 @@
                 </ul>
             </div>
             <div class="navbar-nav ms-lg-auto mx-sm-5">
-                <a href="#" class="nav-item nav-link" onmouseenter="changeIcon(this,false)" onmouseleave="changeIcon(this,true)"><i class="fa fa-lock"></i>&nbsp;&nbsp;Se connecter</a>
+                <a href="index.php?action=connexion" class="nav-item nav-link" onmouseenter="changeIcon(this,false)" onmouseleave="changeIcon(this,true)"><i class="fa fa-lock"></i>&nbsp;&nbsp;Se connecter</a>
             </div>
         </div>
     </nav>
@@ -42,7 +43,7 @@
         <?= $contenu ?>
     </div>
     <!-- #contenu -->
-    <footer> Site de gestion de convocations sportives réalisé avec PHP, HTML5 et CSS. </footer>
+    <footer>Site de gestion de convocations sportives réalisé avec PHP, HTML5 et CSS. </footer>
 <!-- #global -->
 
 <script>

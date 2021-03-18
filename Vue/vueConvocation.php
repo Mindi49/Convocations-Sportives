@@ -8,13 +8,12 @@
 <!-- ici la liste de toutes les convocs, le joueur et le match -->
 <div class="row pt-5">
     <div class="col">
-        <h1>Toutes les Convocations (par joueur et par match)</h1>
+        <h1>Convocations par match</h1>
         <table class="table border table-striped table-hover">
             <tbody>
                 <?php foreach ($convocations as $convocation): ?>
                     <tr>
                         <td><?= $convocation['Competition'] ?> - <?= $convocation['Equipe'] ?> (le <?= $convocation['Date'] ?>)</td>
-                        <td><?= $convocation['Nom'] ?> <?= $convocation['Prenom'] ?></td>
                         <td><form method="post" action="index.php?action=supprimerConvocation">
                                 <input type="hidden" name="num" value="<?= $convocation['NumConvoc'] ?>" />
                                 <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button></form></td>
@@ -36,8 +35,7 @@
             <?php foreach ($convocationsPubliees as $convocationPubliee): ?>
                 <tr>
                     <td><?= $convocationPubliee['Competition'] ?> - <?= $convocationPubliee['Equipe'] ?> (le <?= $convocationPubliee['Date'] ?>)</td>
-                    <td><?= $convocationPubliee['Nom'] ?> <?= $convocationPubliee['Prenom'] ?></td>
-                    <td><form method="post" action="index.php?action=supprimerConvocation">
+                    <td><form method="post" action="index.php?action=depublier">
                             <input type="hidden" name="num" value="<?= $convocationPubliee['NumConvoc'] ?>" />
                             <button type="submit" class="btn btn-danger"><i class="fa fa-eye-slash"></i></button></form></td>
                 </tr>
@@ -48,25 +46,7 @@
 
 <div class="row pt-5">
     <h1>Supprimer des convocations</h1>
-    <div class="offset-1 col-5">
-        <h2>Pour un Match :</h2>
-        <form method="post" action="index.php?action=supprimerConvocationsMatch">
-            <div class="form-group row">
-                <label for="convocationsMatch" class="col-2 col-form-label">Match : </label>
-                <div class="col">
-                    <select name="num" id="convocationsMatch" class="form-select" >
-                        <?php foreach ($matchs as $match): ?>
-                            <option value="<?=$match['NumMatch']?>"><?=$match['Competition']?> - <?=$match['Equipe']?> le <?=$match['Date']?></option>
-                        <?php endforeach;?>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row justify-content-center mt-2">
-                <button type="submit" class="btn btn-danger col-5">Supprimer</button>
-            </div>
-        </form>
-    </div>
-    <div class="offset-1 col-5">
+    <div class="col-5">
         <h2>Pour un Joueur :</h2>
         <form method="post" action="index.php?action=supprimerConvocationsJoueur">
             <div class="form-group row">

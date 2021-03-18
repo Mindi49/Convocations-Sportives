@@ -17,6 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 DROP TABLE IF EXISTS T_ABSENCE;
+DROP TABLE IF EXISTS T_CONVOCATION_JOUEUR;
 DROP TABLE IF EXISTS T_CONVOCATION;
 DROP TABLE IF EXISTS T_MATCH;
 DROP TABLE IF EXISTS T_JOUEUR;
@@ -26,11 +27,12 @@ DROP TABLE IF EXISTS T_CATEGORIE;
 DROP TABLE IF EXISTS T_UTILISATEUR;
 
 
+
 CREATE TABLE T_UTILISATEUR (
-    Username VARCHAR(50),
-    Password VARCHAR(50),
+    NomUtilisateur VARCHAR(50),
+    Mdp VARCHAR(50),
     Role VARCHAR(30) CHECK (Role in ('entraineur','secretaire')),
-    PRIMARY KEY (Username,Password)
+    PRIMARY KEY (NomUtilisateur,Mdp)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE T_CATEGORIE (
@@ -78,7 +80,7 @@ CREATE TABLE T_MATCH (
 
 -- 1 convoc = 1 match et un joueur qui participe
 -- pour un même numMatch on aura donc entre 11 et 14 joueurs associés (= joueurs de l'équipe selectionnée)
-CREATE TABLE T_CONVOCATION (
+/*CREATE TABLE T_CONVOCATION (
     NumConvoc int AUTO_INCREMENT,
     NumMatch int,
     IdJoueur int,
@@ -86,6 +88,24 @@ CREATE TABLE T_CONVOCATION (
     PRIMARY KEY (NumConvoc),
     FOREIGN KEY (NumMatch) REFERENCES T_MATCH(NumMatch) ,
     FOREIGN KEY (IdJoueur) REFERENCES T_JOUEUR(IdJoueur)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+*/
+
+
+CREATE TABLE T_CONVOCATION (
+    NumConvoc int AUTO_INCREMENT,
+    NumMatch int,
+    Publie boolean DEFAULT FALSE,
+    PRIMARY KEY (NumConvoc),
+    FOREIGN KEY (NumMatch) REFERENCES T_MATCH(NumMatch)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE T_CONVOCATION_JOUEUR (
+    NumConvoc int,
+    IdJoueur int,
+    FOREIGN KEY (NumConvoc) REFERENCES T_CONVOCATION(NumConvoc),
+    FOREIGN KEY (IdJoueur) REFERENCES T_JOUEUR(IdJoueur),
+    PRIMARY KEY (NumConvoc,IdJoueur)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

@@ -22,4 +22,4 @@ Enter password:
 Enter password:
 ```
 
-- Visiter la [page d'accueil](http://localhost/devweb/PROJET/Convocations_sportives_MVC/index.php)
+- Visiter la [page d'accueil](http://localhost/devweb/PROJET/Convocations-Sportives/index.php)

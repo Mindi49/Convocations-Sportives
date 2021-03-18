@@ -34,7 +34,7 @@ class Match extends Modele {
 
 
     // TODO: voir l'update de la date qui doit être possible
-    public function updateMatch($numMatch, $categorie, $competition, $equipe, $equipeadverse, $date, $heure, $terrain, $site) {
+    public function modifierMatch($numMatch, $categorie, $competition, $equipe, $equipeadverse, $date, $heure, $terrain, $site) {
         $sql = 'UPDATE T_MATCH'
             . ' SET Categorie = ?, Competition = ?, Equipe = ?,'
             . ' EquipeAverse = ?, Date = ?, Heure = ?,'

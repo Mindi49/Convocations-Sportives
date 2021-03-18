@@ -2,6 +2,7 @@
 <?php $this->titre = "Convocations sportives"; ?>
 
 <!---------------------- CATEGORIES ---------------------->
+<!--
 <div class="row pt-5">
     <div class="col-6">
         <h1>Catégories</h1>
@@ -41,9 +42,9 @@
         </form>
     </div>
 </div>
-
+-->
 <!---------------------- COMPETITIONS ---------------------->
-
+<!--
 <div class="row pt-5">
     <div class="col-6">
         <h1>Compétitions</h1>
@@ -82,8 +83,10 @@
         </form>
     </div>
 </div>
-<!---------------------- EQUIPES ---------------------->
+-->
 
+<!---------------------- EQUIPES ---------------------->
+<!--
 <div class="row pt-5">
     <div class="col-6">
         <h1>Équipes</h1>
@@ -121,7 +124,7 @@
         </form>
     </div>
 </div>
-
+-->
 
 
 
@@ -130,17 +133,29 @@
 <!-- voir la liste des convocs pour un match (tous les joueurs qui sont convoqués) -->
 <!-- voir la liste des convocs pour un joueur (tous les matchs auxquels est convoqué le joueur) -->
 <!-- ici la liste de toutes les convocs, le joueur et le match -->
+<div class="bs-callout" style="border-left-color: #001D6E">
+    Bienvenue sur ce site de convocations sportives
+</div>
+<div class="bs-callout" style="border-left-color: #eeeeee">
+    Consultez les matchs prévus
+</div>
+<div class="bs-callout" style="border-left-color: darkred">
+    Composez vos équipes et publiez les convocations
+</div>
 
 <div class="row pt-5">
     <h1>Convocations Publiées</h1>
-    <div class="col-8">
+    <div class="col-6">
         <table class="table border table-striped table-hover">
             <?php foreach ($convocationsPubliees as $convocationPubliee): ?>
                 <tr>
                     <td><?= $convocationPubliee['Competition'] ?> - <?= $convocationPubliee['Equipe'] ?> (le <?= $convocationPubliee['Date'] ?>)</td>
-                    <td><?= $convocationPubliee['Nom'] ?> <?= $convocationPubliee['Prenom'] ?></td>
                 </tr>
             <?php endforeach; ?>
         </table>
     </div>
 </div>
+
+
+
+

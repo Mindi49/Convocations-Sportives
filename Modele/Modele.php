@@ -30,6 +30,10 @@ abstract class Modele {
         return $resultat;
     }
 
+    protected function getLastInsertID() {
+        return $this->getBdd()->lastInsertId();
+    }
+
     /**
      * Renvoie un objet de connexion à la BD en initialisant la connexion au besoin
      * 
