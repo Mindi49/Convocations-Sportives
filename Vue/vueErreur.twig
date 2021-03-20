@@ -1,1 +1,10 @@
-<p>{{ msgErreur }}</p>
+{% extends "gabarit.twig" %}
+
+{% block title %}
+    Convocations sportives
+{% endblock %}
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>ERREUR :</strong> Une erreur est survenue
+    {{ msgErreur }}
+</div>

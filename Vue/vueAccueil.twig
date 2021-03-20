@@ -1,5 +1,6 @@
 {% extends "gabarit.twig" %}
 
+
 {% block title %}
     Convocations sportives
 {% endblock %}
@@ -148,13 +149,20 @@
 </div>
 
 <div class="row pt-5">
-    <h1>Convocations Publiées</h1>
+    <div class="row">
+        <h1 class="col-5">Convocations Publiées</h1>
+        <div class="alert alert-info alert-dismissible fade show col-6" role="alert">
+            <strong>Note:</strong> Cliquez sur l'intitulé d'une convocation pour acceder aux informations la concernant.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
     <div class="col-6">
         <table class="table border table-striped table-hover">
 
             {% for convocationPubliee in convocationsPubliees %}
                 <tr>
-                    <td>{{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date'] }})</td>
+                    <td><a href="index.php?action=informationsConvocation&num={{ convocationPubliee['NumConvoc'] }}" class="btn" role="button" style="text-align: left; width: 100%">
+                            {{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date']|date("d/m/Y") }})</a></td>
                 </tr>
             {% else %}
                 <tr>

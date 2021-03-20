@@ -1,5 +1,9 @@
 {% extends "gabarit.twig" %}
 
+{% block isAccueil %}
+    active
+{% endblock %}
+
 {% block title %}
 Convocations sportives
 {% endblock %}
@@ -33,7 +37,7 @@ Convocations sportives
                         <td>{{ joueur['Licencie'] }}</td>
                         <td><form method="post" action="index.php?action=supprimerJoueur">
                                 <input type="hidden" name="idJoueur" value="{{ joueur['IdJoueur'] }}" />
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button>
+                                <button type="submit" class="btn btn-outline-danger"><i class="fa fa-user-slash"></i></button>
                             </form></td>
                     </tr>
                     {% else %}

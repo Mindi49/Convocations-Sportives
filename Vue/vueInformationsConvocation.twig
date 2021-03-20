@@ -1,0 +1,85 @@
+{% extends "gabarit.twig" %}
+
+{% block isConvocation %}
+    active
+{% endblock %}
+
+
+{% block title %}
+    Convocations sportives
+{% endblock %}
+
+{% block contenu %}
+    <!---------------------- MATCHS ---------------------->
+
+<div class="row pt-5">
+    <div class="col-6">
+        <h1>Convocation pour le match : </h1>
+        <table class="table table-bordered table-light">
+            <tbody>
+                <tr>
+                    <th>Catégorie</th>
+                    <td>{{ convocation['Categorie'] }}</td>
+                </tr>
+                <tr>
+                    <th>Competition</th>
+                    <td>{{ convocation['Competition'] }}</td>
+                </tr>
+
+                    <th>Équipe</th>
+                    <td>{{ convocation['Equipe'] }}</td>
+                </tr>
+                <tr>
+                    <th>Équipe adverse</th>
+                    <td>{{ convocation['EquipeAdverse'] }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ convocation['Date']|date("d/m/Y") }}</td>
+                </tr>
+                <tr>
+                    <th>Heure</th>
+                    <td>{{ convocation['Heure'] }}</td>
+                </tr>
+                <tr>
+                    <th>Terrain</th>
+                    <td>{{ convocation['Terrain'] }}</td>
+                </tr>
+                <tr>
+                    <th>Site</th>
+                    <td>{{ convocation['Site'] }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="offset-1 col-5">
+        <h1>Joueurs convoqués</h1>
+        <div class="row">
+            <table class="table border table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Prenom</th>
+                    <th>Nom</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ind, joueurConvoque in joueursConvoques %}
+                    <tr>
+                        <th>{{ ind + 1 }}</th>
+                        <td>{{ joueurConvoque['Prenom'] }}</td>
+                        <td>{{ joueurConvoque['Nom'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

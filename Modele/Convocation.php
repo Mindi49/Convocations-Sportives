@@ -24,14 +24,14 @@ class Convocation extends Modele {
             . ' WHERE NumConvoc = ?';
         $convocation = $this->executerRequete($sql, array($numConvoc));
         if ($convocation->rowCount() > 0)
-            return $convocation->fetch();  // Accès à la première ligne de résultat
+            return $convocation->fetch(PDO::FETCH_ASSOC);  // Accès à la première ligne de résultat
         else
             throw new Exception("Aucun équipe ne correspond à cet id : '$numConvoc'");
     }
 
     // récupère tous les joueurs convoqués à un match
      public function getJoueursConvoques($numConvoc) {
-        $sql = 'SELECT * FROM T_CONVOCATION_JOUEUR JOIN T_JOUEUR '
+        $sql = 'SELECT * FROM T_CONVOCATION_JOUEUR C JOIN T_JOUEUR J ON C.IdJoueur = J.IdJoueur '
             . ' WHERE NumConvoc = ?';
         $convocationsMatch = $this->executerRequete($sql, array($numConvoc));
         return $convocationsMatch->fetchAll();

@@ -1,5 +1,9 @@
 {% extends "gabarit.twig" %}
 
+{% block isAbsence %}
+active
+{% endblock %}
+
 {% block title %}
 Convocations sportives
 {% endblock %}
@@ -25,12 +29,12 @@ Convocations sportives
                 <tr>
                     <td>{{ absence['Prenom'] }}</td>
                     <td>{{ absence['Nom'] }}</td>
-                    <td>{{ absence['Date'] }}</td>
+                    <td>{{ absence['Date']|date("d/m/Y") }}</td>
                     <td>{{ absence['Motif'] }}</td>
                     <td><form method="post" action="index.php?action=supprimerAbsence">
                             <input type="hidden" name="idJoueur" value="{{ absence['IdJoueur'] }}" />
                             <input type="hidden" name="date" value="{{ absence['Date'] }}" />
-                            <button type="submit" class="btn btn-danger"><i class="fa fa-minus"></i></button>
+                            <button type="submit" class="btn btn-danger border-0"><i class="fa fa-times"></i></button>
                         </form>
 
                 </tr>
@@ -92,16 +96,16 @@ Convocations sportives
 </div>
 
 <script>
-    var today = new Date().toISOString().split('T')[0];
-    document.querySelector('input[type=date]').setAttribute('min', today);
+    // var today = new Date().toISOString().split('T')[0];
+    // document.querySelector('input[type=date]').setAttribute('min', today);
 
     var date = document.querySelector('input[type=date]');
     function weekEnd(e) {
         var jour = new Date(e.target.value).getUTCDay();
-        if( jour == 0 || jour == 6 ){
+        if(jour == 0){
             e.target.setCustomValidity('');
         } else {
-            e.target.setCustomValidity('Veuillez choisir une date valide (Samedi ou Dimanche)');
+            e.target.setCustomValidity('Veuillez choisir une date valide (Dimanche)');
         }
     }
     date.addEventListener('change',weekEnd);

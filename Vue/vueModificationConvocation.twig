@@ -1,5 +1,9 @@
 {% extends "gabarit.twig" %}
 
+{% block isConvocation %}
+    active
+{% endblock %}
+
 {% block title %}
 Convocations sportives
 {% endblock %}
@@ -14,7 +18,7 @@ Convocations sportives
             <div class="col-7">
                 <select name="numMatch" id="convocationMatch" class="form-select">
                     {% for match in matchs %}
-                        <option value="{{ match['NumMatch'] }}" {% if convocation['NumMatch'] == match['NumMatch'] %} selected {% endif %}>{{ match['Competition'] }} - {{ match['Equipe'] }} le {{ match['Date'] }}</option>
+                        <option value="{{ match['NumMatch'] }}" {% if convocation['NumMatch'] == match['NumMatch'] %} selected {% endif %}>{{ match['Competition'] }} - {{ match['Equipe'] }} le {{ match['Date']|date("d/m/Y") }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -28,16 +32,15 @@ Convocations sportives
                     </div>
                     <div class="col-4">
                         <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
-                            <option value="" selected>choix</option>
+                            <option value="">choix</option>
                             {% for joueur in joueurs %}
-                                <option value="{{ joueur['IdJoueur'] }}" >{{ joueur['Prenom'] }} {{ nonlicencie['Nom'] }}</option>
+                                <option value="{{ joueur['IdJoueur'] }}" {% if joueursConvoques[i-1]['IdJoueur'] == joueur['IdJoueur'] %} selected {% endif %}>{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
             </div>
         {% endfor %}
-
         <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
         <button type="submit" class="btn btn-primary col-2 mt-2">Confirmer</button>
     </form>

@@ -1,5 +1,10 @@
 {% extends "gabarit.twig" %}
 
+{% block isConvocation %}
+    active
+{% endblock %}
+
+
 {% block title %}
 Convocations sportives
 {% endblock %}
@@ -11,33 +16,46 @@ Convocations sportives
 <!-- voir la liste des convocs pour un joueur (tous les matchs auxquels est convoqué le joueur) -->
 <!-- ici la liste de toutes les convocs, le joueur et le match -->
 <div class="row pt-5">
+    <div class="row">
+        <h1 class="col-5">Convocations par match</h1>
+        <div class="alert alert-info alert-dismissible fade show col-7" role="alert">
+            <strong>Note:</strong> Cliquez sur l'intitulé d'une convocation pour acceder aux informations la concernant.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
     <div class="col">
-        <h1>Convocations par match</h1>
         <table class="table border table-striped table-hover">
             <thead>
             <tr>
                 <th>Convocation</th>
-                <th>Supprimer</th>
                 <th>Modifier</th>
                 <th>Publier</th>
+                <th>Supprimer</th>
             </tr>
             </thead>
             <tbody>
                 {% for convocation in convocations %}
                     <tr>
-                        <td>{{ convocation['Competition'] }} - {{ convocation['Equipe'] }} (le {{ convocation['Date'] }})</td>
-                        <td><form method="post" action="index.php?action=supprimerConvocation">
+                        <td>
+                            <a href="index.php?action=informationsConvocation&num={{ convocation['NumConvoc'] }}" class="btn" role="button" style="text-align: left; width: 100%">
+                                {{ convocation['Competition'] }} - {{ convocation['Equipe'] }} (le {{ convocation['Date']|date("d/m/Y") }})</a>
+                        </td>
+                        <td>
+                            <form method="post" action="index.php?action=accesModifierConvocation&num={{ convocation['NumConvoc'] }}">
+                                <button type="submit" class="btn btn-outline-dark border-0" {% if convocation['Publie'] %} hidden {% endif %}><i class="fa fa-pen"></i></button>
+                            </form>
+                        </td>
+                        <td><form method="post" action="index.php?action={% if convocation['Publie'] %}depublier{% else %}publier{% endif %}">
                                 <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button></form>
+                                <button type="submit" id="publication" {% if convocation['Publie'] %} class="btn btn-outline-secondary border-0"> <i class="fa fa-eye-slash"></i> {% else %} class="btn btn-outline-primary border-0"><i class="fa fa-eye"></i> {% endif %}</button>
+                            </form>
                         </td>
-                        <td><form method="post" action="index.php?action=accesModifierConvocation&num={{ convocation['NumConvoc'] }}">
-                            <button type="submit" class="btn btn-secondary" {% if convocation['Publie'] %} disabled {% endif %}><i class="fa fa-pen"></i></button></form>
-                        </td>
-                        <td><form method="post" action="index.php?action=publier">
+                        <td>
+                            <form method="post" action="index.php?action=supprimerConvocation">
                                 <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button></form>
+                                <button type="submit" class="btn btn-outline-danger border-0"><i class="fa fa-trash-alt"></i></button>
+                            </form>
                         </td>
-
                     </tr>
                     {% else %}
                     <tr>
@@ -50,8 +68,8 @@ Convocations sportives
 </div>
 
 <div class="row pt-5">
-    <div class="col">
-        <h1>Convocations Publiées</h1>
+    <h1>Convocations Publiées</h1>
+    <div class="col-9">
         <table class="table border table-striped table-hover">
             <thead>
             <tr>
@@ -61,10 +79,11 @@ Convocations sportives
             </thead>
             {% for convocationPubliee in convocationsPubliees %}
                 <tr>
-                    <td>{{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date'] }})</td>
+                    <td><a href="index.php?action=informationsConvocation&num={{ convocationPubliee['NumConvoc'] }}" class="btn" role="button" style="text-align: left; width: 100%">
+                            {{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date']|date("d/m/Y") }})</a></td>
                     <td><form method="post" action="index.php?action=depublier">
                             <input type="hidden" name="num" value="{{ convocationPubliee['NumConvoc'] }}" />
-                            <button type="submit" class="btn btn-danger"><i class="fa fa-eye-slash"></i></button></form></td>
+                            <button type="submit" class="btn btn-outline-secondary border-0"><i class="fa fa-eye-slash"></i></button></form></td>
                 </tr>
                 {% else %}
                     <tr>
@@ -75,27 +94,27 @@ Convocations sportives
     </div>
 </div>
 
-<div class="row pt-5">
-    <h1>Supprimer des convocations</h1>
-    <div class="col-5">
-        <h2>Pour un Joueur :</h2>
-        <form method="post" action="index.php?action=supprimerConvocationsJoueur">
-            <div class="form-group row">
-                <label for="convocationsJoueur" class="col-2 col-form-label"> Joueur : </label>
-                <div class="col">
-                    <select name="idJoueur" id="convocationsMatchJoueur" class="form-select">
-                    {% for joueur in joueurs %}
-                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
-                    {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row justify-content-center mt-2">
-                <button type="submit" class="btn btn-danger col-5">Supprimer</button>
-            </div>
-        </form>
-    </div>
-</div>
+{#<div class="row pt-5">#}
+{#    <h1>Supprimer des convocations</h1>#}
+{#    <div class="col-5">#}
+{#        <h2>Pour un Joueur :</h2>#}
+{#        <form method="post" action="index.php?action=supprimerConvocationsJoueur">#}
+{#            <div class="form-group row">#}
+{#                <label for="convocationsJoueur" class="col-2 col-form-label"> Joueur : </label>#}
+{#                <div class="col">#}
+{#                    <select name="idJoueur" id="convocationsMatchJoueur" class="form-select">#}
+{#                    {% for joueur in joueurs %}#}
+{#                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>#}
+{#                    {% endfor %}#}
+{#                    </select>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="form-group row justify-content-center mt-2">#}
+{#                <button type="submit" class="btn btn-danger col-5">Supprimer</button>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{#</div>#}
 
 
 <div class="row pt-5">
@@ -106,34 +125,57 @@ Convocations sportives
             <div class="col-7">
                 <select name="num" id="convocationMatch" class="form-select">
                 {% for match in matchs %}
-                    <option value="{{ match['NumMatch'] }}">{{ match['Competition'] }} - {{ match['Equipe'] }} le {{ match['Date'] }}</option>
+                    <option value="{{ match['NumMatch'] }}">{{ match['Competition'] }} - {{ match['Equipe'] }} le {{ match['Date']|date("d/m/Y") }}</option>
                 {% endfor %}
                 </select>
             </div>
         </div>
-        <!-- afficher le détail du match selectionné -->
+        <div class="row">
 
-        {% for i in 1..14 %}
-            <div class="form-group row">
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend col-1">
-                        <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
-                    </div>
-                    <div class="col-4">
-                        <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
-                            <option value="" selected>choix</option>
-                        {% for joueur in joueurs %}
-                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
-                        {% endfor %}
-                        </select>
-                    </div>
-                </div>
+            <div class="col-6">
+                    {% for i in 1..7 %}
+                        <div class="form-group row">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend col-2">
+                                    <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
+                                </div>
+                                <div class="col">
+                                    <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
+                                        <option value="" selected>choix</option>
+                                    {% for joueur in joueurs %}
+                                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
             </div>
-        {% endfor %}
-
+            <div class="col-6">
+                {% for i in 8..14 %}
+                    <div class="form-group row">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend col-2">
+                                <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
+                            </div>
+                            <div class="col">
+                                <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
+                                    <option value="" selected>choix</option>
+                                    {% for joueur in joueurs %}
+                                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         <div class="form-group row justify-content-center mt-2">
             <button type="submit" class="btn btn-primary col-3">Ajouter</button>
         </div>
     </form>
 </div>
+
 {% endblock %}
+

@@ -29,10 +29,16 @@ class ControleurConvocation {
     public function accesModifierConvocation($numConvoc) {
         $convocation = $this->convocation->getConvocation($numConvoc);
         $matchs = $this->match->getMatchs();
+        $joueursConvoques = $this->convocation->getJoueursConvoques($numConvoc);
         $joueurs = $this->joueur->getJoueurs();
         $vue = new Vue("ModificationConvocation");
-        var_dump($convocation);
-        $vue->generer(array('convocation' => $convocation,'matchs' => $matchs, 'joueurs' => $joueurs));
+        $vue->generer(array('convocation' => $convocation,'matchs' => $matchs, 'joueurs' => $joueurs, 'joueursConvoques' => $joueursConvoques));
+    }
+    public function informationsConvocation($numConvoc) {
+        $convocation = $this->convocation->getConvocation($numConvoc);
+        $joueursConvoques = $this->convocation->getJoueursConvoques($numConvoc);
+        $vue = new Vue("InformationsConvocation");
+        $vue->generer(array('convocation' => $convocation, 'joueursConvoques' => $joueursConvoques));
     }
 
     public function modifierConvocation($numConvoc, $numMatch) {

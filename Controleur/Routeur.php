@@ -163,6 +163,10 @@ class Routeur {
                     $numConvocation = $this->getParametre($_GET, 'num');
                     $this->ctrlConvocation->accesModifierConvocation($numConvocation);
                 }
+                else if ($_GET['action'] == 'informationsConvocation') {
+                    $numConvocation = $this->getParametre($_GET, 'num');
+                    $this->ctrlConvocation->informationsConvocation($numConvocation);
+                }
                 else if ($_GET['action'] == 'modifierConvocation') {
                     $numConvocation = $this->getParametre($_POST, 'num');
                     $numMatch = $this->getParametre($_POST, 'numMatch');
