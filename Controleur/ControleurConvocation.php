@@ -26,13 +26,25 @@ class ControleurConvocation {
         $vue->generer(array('convocations' => $convocations, 'convocationsPubliees' => $convocationsPubliees, 'joueurs' => $joueurs, 'matchs' => $matchs));
     }
 
+    public function accesModifierConvocation($numConvoc) {
+        $convocation = $this->convocation->getConvocation($numConvoc);
+        $matchs = $this->match->getMatchs();
+        $joueurs = $this->joueur->getJoueurs();
+        $vue = new Vue("ModificationConvocation");
+        var_dump($convocation);
+        $vue->generer(array('convocation' => $convocation,'matchs' => $matchs, 'joueurs' => $joueurs));
+    }
 
+    public function modifierConvocation($numConvoc, $numMatch) {
+        $this->convocation->modifierConvocation($numConvoc, $numMatch);
+        header("Location:index.php?action=match");
+    }
     public function ajouterConvocation($numMatch) {
         return $this->convocation->ajouterConvocation($numMatch);
     }
 
     public function ajouterJoueurConvoque ($numConvocation,$idJoueur) {
-        return $this->convocation->ajouterJoueurConvoque($numConvocation,$idJoueur);
+        $this->convocation->ajouterJoueurConvoque($numConvocation,$idJoueur);
     }
 
     public function supprimerConvocation($numConvocation) {
@@ -48,6 +60,11 @@ class ControleurConvocation {
 
     public function supprimerJoueurConvoque($numConvocation,$idJoueur) {
         $this->convocation->supprimerJoueurConvoque($numConvocation,$idJoueur);
+        header("Location:index.php?action=convocation");
+    }
+
+    public function supprimerJoueursConvoques($numConvocation) {
+        $this->convocation->supprimerJoueurConvoques($numConvocation);
         header("Location:index.php?action=convocation");
     }
 

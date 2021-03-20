@@ -154,6 +154,22 @@ class Routeur {
                     $numConvocation = $this->ctrlConvocation->ajouterConvocation($numMatch);
                     for ($i = 1; $i < 15; $i++) {
                         $idJoueur = $this->getParametre($_POST, 'idJoueur' . $i);
+                        if(!empty($idJoueur))
+                            $this->ctrlConvocation->ajouterJoueurConvoque($numConvocation,$idJoueur);
+                    }
+                    header("Location:index.php?action=convocation");
+                }
+                else if ($_GET['action'] == 'accesModifierConvocation') {
+                    $numConvocation = $this->getParametre($_GET, 'num');
+                    $this->ctrlConvocation->accesModifierConvocation($numConvocation);
+                }
+                else if ($_GET['action'] == 'modifierConvocation') {
+                    $numConvocation = $this->getParametre($_POST, 'num');
+                    $numMatch = $this->getParametre($_POST, 'numMatch');
+                    $this->ctrlConvocation->supprimerJoueursConvoques($numConvocation);
+                    $this->ctrlConvocation->modifierConvocation($numConvocation,$numMatch);
+                    for ($i = 1; $i < 15; $i++) {
+                        $idJoueur = $this->getParametre($_POST, 'idJoueur' . $i);
                         if(isset($idJoueur))
                             $this->ctrlConvocation->ajouterJoueurConvoque($numConvocation,$idJoueur);
                     }

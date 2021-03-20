@@ -20,7 +20,7 @@ class Convocation extends Modele {
 
      // récupère une convocation
     public function getConvocation($numConvoc) {
-        $sql = 'SELECT * FROM T_CONVOCATION JOIN T_MATCH'
+        $sql = 'SELECT * FROM T_CONVOCATION C JOIN T_MATCH M ON M.NumMatch = C.NumMatch'
             . ' WHERE NumConvoc = ?';
         $convocation = $this->executerRequete($sql, array($numConvoc));
         if ($convocation->rowCount() > 0)
@@ -49,8 +49,8 @@ class Convocation extends Modele {
 
     // ajoute une convocation pour un match
      public function ajouterConvocation($numMatch) {
-        $sql = 'INSERT INTO T_CONVOCATION(NumMatch)'
-            . ' VALUES(?)';
+        $sql = 'INSERT INTO T_CONVOCATION (NumMatch)'
+            . ' VALUES (?)';
         $this->executerRequete($sql,array($numMatch));
         return $this->getLastInsertID();
     }
@@ -58,7 +58,7 @@ class Convocation extends Modele {
     // ajoute un joueur dans les joueurs convoqués au match
     public function ajouterJoueurConvoque($numConvocation,$idJoueur) {
         $sql = 'INSERT INTO T_CONVOCATION_JOUEUR'
-            . ' VALUES(?,?)';
+            . ' VALUES (?,?)';
         $this->executerRequete($sql,array($numConvocation,$idJoueur));
     }
 
@@ -102,6 +102,12 @@ class Convocation extends Modele {
         $sql = 'DELETE FROM T_CONVOCATION_JOUEUR'
             . ' WHERE IdJoueur = ?';
         $this->executerRequete($sql, array($idJoueur));
+    }
+
+    public function modifierConvocation($numConvoc, $numMatch) {
+        $sql = 'UPDATE T_CONVOCATION'
+            . ' SET Match = ? WHERE Num = ?';
+        $this->executerRequete($sql, array($numConvoc, $numMatch));
     }
 
 }

@@ -18,7 +18,7 @@ class Joueur extends Modele {
     public function getJoueurs() {
         $sql = 'SELECT *'
             . ' FROM T_JOUEUR'
-            . ' ORDER BY Nom';
+            . ' ORDER BY Prenom, Nom';
         $effectifs = $this->executerRequete($sql);
         return $effectifs->fetchAll();
     }
@@ -26,7 +26,7 @@ class Joueur extends Modele {
     public function getJoueursLicencies() {
         $sql = 'SELECT *'
             . ' FROM T_JOUEUR WHERE Licencie = \'oui\''
-            . ' ORDER BY Nom';
+            . ' ORDER BY Prenom, Nom';
         $effectifs = $this->executerRequete($sql);
         return $effectifs->fetchAll();
     }
@@ -34,7 +34,7 @@ class Joueur extends Modele {
     public function getJoueursNonLicencies() {
         $sql = 'SELECT *'
             . ' FROM T_JOUEUR WHERE Licencie = \'non\''
-            . ' ORDER BY Nom';
+            . ' ORDER BY Prenom, Nom';
         $effectifs = $this->executerRequete($sql);
         return $effectifs->fetchAll();
     }

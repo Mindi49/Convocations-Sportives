@@ -12,25 +12,25 @@ Convocations sportives
         <table class="table border table-striped table-hover">
             <thead>
                 <tr>
+                    <th>Prénom</th>
                     <th>Nom</th>
-                    <th>Prenom</th>
                     <th>Date</th>
                     <th>Motif</th>
-                    <th>Action</th>
+                    <th>Annuler</th>
                 </tr>
             </thead>
             <tbody>
 
                 {% for absence in absences %}
                 <tr>
-                    <td>{{ absence['Nom'] }}</td>
                     <td>{{ absence['Prenom'] }}</td>
+                    <td>{{ absence['Nom'] }}</td>
                     <td>{{ absence['Date'] }}</td>
                     <td>{{ absence['Motif'] }}</td>
                     <td><form method="post" action="index.php?action=supprimerAbsence">
                             <input type="hidden" name="idJoueur" value="{{ absence['IdJoueur'] }}" />
                             <input type="hidden" name="date" value="{{ absence['Date'] }}" />
-                            <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button>
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-minus"></i></button>
                         </form>
 
                 </tr>
@@ -51,7 +51,7 @@ Convocations sportives
                 <div class="col">
                     <select name="idJoueur" id="joueursAbs" class="form-select">
                         {% for joueur in joueurs %}
-                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Nom'] }} {{ joueur['Prenom'] }}</option>
+                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
                         {% endfor %}
                     </select>
                 </div>

@@ -17,8 +17,8 @@ Convocations sportives
             <table class="table border table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Nom</th>
                         <th>Prenom</th>
+                        <th>Nom</th>
                         <th>Categorie</th>
                         <th>Licencie</th>
                         <th>Action</th>
@@ -27,8 +27,8 @@ Convocations sportives
                 <tbody>
                     {% for joueur in joueurs %}
                     <tr>
-                        <td>{{ joueur['Nom'] }}</td>
                         <td>{{ joueur['Prenom'] }}</td>
+                        <td>{{ joueur['Nom'] }}</td>
                         <td>{{ joueur['Categorie'] }}</td>
                         <td>{{ joueur['Licencie'] }}</td>
                         <td><form method="post" action="index.php?action=supprimerJoueur">
@@ -98,16 +98,16 @@ Convocations sportives
             <table class="table border table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Nom</th>
                         <th>Prenom</th>
+                        <th>Nom</th>
                         <th>Categorie</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for licencie in licencies %}
                         <tr>
-                            <td>{{ licencie['Nom'] }}</td>
                             <td>{{ licencie['Prenom'] }}</td>
+                            <td>{{ licencie['Nom'] }}</td>
                             <td>{{ licencie['Categorie'] }}</td>
                         </tr>
                     {% endfor %}
@@ -122,7 +122,7 @@ Convocations sportives
                     <div class="col-6">
                         <select name="idJoueur" id="joueurLicence" class="form-select">
                             {% for nonlicencie in nonlicencies %}
-                                <option value="{{ nonlicencie['IdJoueur'] }}">{{ nonlicencie['Nom'] }} {{ nonlicencie['Prenom'] }}</option>
+                                <option value="{{ nonlicencie['IdJoueur'] }}">{{ nonlicencie['Prenom'] }} {{ nonlicencie['Nom'] }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -139,7 +139,7 @@ Convocations sportives
                     <div class="col-6">
                         <select name="idJoueur" id="joueurLicence" class="form-select">
                             {% for licencie in licencies %}
-                                <option value="{{ licencie['IdJoueur'] }}">{{ licencie['Nom'] }} {{ licencie['Prenom'] }}</option>
+                                <option value="{{ licencie['IdJoueur'] }}">{{ licencie['Prenom'] }} {{ nonlicencie['Nom'] }}</option>
                             {% endfor %}
                         </select>
                     </div>

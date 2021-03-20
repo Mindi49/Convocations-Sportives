@@ -1,0 +1,50 @@
+{% extends "gabarit.twig" %}
+
+{% block title %}
+Convocations sportives
+{% endblock %}
+
+{% block contenu %}
+
+<div class="row pt-5">
+    <h1>Modifier une Convocation</h1>
+    <form method="post" action="index.php?action=modifierConvocation">
+        <div class="form-group row mb-3">
+            <label for="convocationMatch" class="col-1 col-form-label">Match : </label>
+            <div class="col-7">
+                <select name="numMatch" id="convocationMatch" class="form-select">
+                    {% for match in matchs %}
+                        <option value="{{ match['NumMatch'] }}" {% if convocation['NumMatch'] == match['NumMatch'] %} selected {% endif %}>{{ match['Competition'] }} - {{ match['Equipe'] }} le {{ match['Date'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        {% for i in 1..14 %}
+            <div class="form-group row">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend col-1">
+                        <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
+                    </div>
+                    <div class="col-4">
+                        <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
+                            <option value="" selected>choix</option>
+                            {% for joueur in joueurs %}
+                                <option value="{{ joueur['IdJoueur'] }}" >{{ joueur['Prenom'] }} {{ nonlicencie['Nom'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
+        <button type="submit" class="btn btn-primary col-2 mt-2">Confirmer</button>
+    </form>
+</div>
+<div class="row my-2">
+    <form method="post" action="index.php?action=convocation">
+        <button type="submit" class="btn btn-danger">Annuler la modification</button>
+    </form>
+</div>
+{% endblock %}

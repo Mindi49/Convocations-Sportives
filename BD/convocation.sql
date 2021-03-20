@@ -31,31 +31,34 @@ DROP TABLE IF EXISTS T_UTILISATEUR;
 CREATE TABLE T_UTILISATEUR (
     NomUtilisateur VARCHAR(50),
     Mdp VARCHAR(50),
-    Role VARCHAR(30) CHECK (Role in ('entraineur','secretaire')),
+    Role VARCHAR(30) CHECK (Role in ('Entraineur','Secretaire')),
     PRIMARY KEY (NomUtilisateur,Mdp)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE T_CATEGORIE (
     Nom VARCHAR(50),
     PRIMARY KEY (Nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 CREATE TABLE T_COMPETITION (
    Nom VARCHAR(100),
    PRIMARY KEY (Nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE T_EQUIPE (
     Nom VARCHAR(100),
     PRIMARY KEY (Nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- TODO : voir si on met Licencié ou TypeLicence (libre, etc. - mieux?) default NULL
+
 CREATE TABLE T_JOUEUR (
 	IdJoueur int NOT NULL AUTO_INCREMENT,
     Nom VARCHAR(30) NOT NULL,
     Prenom VARCHAR(30) NOT NULL,
-    Categorie VARCHAR(50),
+    Categorie VARCHAR(50) DEFAULT 'SENIORS',
     Licencie CHAR(3) DEFAULT 'non' CHECK (Licencie IN ('oui','non')),
     PRIMARY KEY (IdJoueur),
     FOREIGN KEY (Categorie) REFERENCES T_CATEGORIE(Nom) ON DELETE SET NULL
@@ -78,19 +81,6 @@ CREATE TABLE T_MATCH (
     FOREIGN KEY (Equipe) REFERENCES T_EQUIPE(Nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 1 convoc = 1 match et un joueur qui participe
--- pour un même numMatch on aura donc entre 11 et 14 joueurs associés (= joueurs de l'équipe selectionnée)
-/*CREATE TABLE T_CONVOCATION (
-    NumConvoc int AUTO_INCREMENT,
-    NumMatch int,
-    IdJoueur int,
-    Publie boolean DEFAULT FALSE,
-    PRIMARY KEY (NumConvoc),
-    FOREIGN KEY (NumMatch) REFERENCES T_MATCH(NumMatch) ,
-    FOREIGN KEY (IdJoueur) REFERENCES T_JOUEUR(IdJoueur)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-*/
-
 
 CREATE TABLE T_CONVOCATION (
     NumConvoc int AUTO_INCREMENT,
@@ -99,6 +89,7 @@ CREATE TABLE T_CONVOCATION (
     PRIMARY KEY (NumConvoc),
     FOREIGN KEY (NumMatch) REFERENCES T_MATCH(NumMatch)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE T_CONVOCATION_JOUEUR (
     NumConvoc int,

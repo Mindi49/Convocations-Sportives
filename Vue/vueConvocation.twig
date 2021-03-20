@@ -14,6 +14,14 @@ Convocations sportives
     <div class="col">
         <h1>Convocations par match</h1>
         <table class="table border table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Convocation</th>
+                <th>Supprimer</th>
+                <th>Modifier</th>
+                <th>Publier</th>
+            </tr>
+            </thead>
             <tbody>
                 {% for convocation in convocations %}
                     <tr>
@@ -21,6 +29,9 @@ Convocations sportives
                         <td><form method="post" action="index.php?action=supprimerConvocation">
                                 <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
                                 <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button></form>
+                        </td>
+                        <td><form method="post" action="index.php?action=accesModifierConvocation&num={{ convocation['NumConvoc'] }}">
+                            <button type="submit" class="btn btn-secondary" {% if convocation['Publie'] %} disabled {% endif %}><i class="fa fa-pen"></i></button></form>
                         </td>
                         <td><form method="post" action="index.php?action=publier">
                                 <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
@@ -42,6 +53,12 @@ Convocations sportives
     <div class="col">
         <h1>Convocations Publiées</h1>
         <table class="table border table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Convocation Publiée</th>
+                <th>Dépublier</th>
+            </tr>
+            </thead>
             {% for convocationPubliee in convocationsPubliees %}
                 <tr>
                     <td>{{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date'] }})</td>
@@ -68,7 +85,7 @@ Convocations sportives
                 <div class="col">
                     <select name="idJoueur" id="convocationsMatchJoueur" class="form-select">
                     {% for joueur in joueurs %}
-                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Nom'] }} {{ joueur['Prenom'] }}</option>
+                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
                     {% endfor %}
                     </select>
                 </div>
@@ -106,7 +123,7 @@ Convocations sportives
                         <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
                             <option value="" selected>choix</option>
                         {% for joueur in joueurs %}
-                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Nom'] }} {{ joueur['Prenom'] }}</option>
+                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
                         {% endfor %}
                         </select>
                     </div>
