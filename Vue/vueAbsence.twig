@@ -77,7 +77,7 @@ Convocations sportives
             <div class="form-group row mt-2">
                 <label for="dateAbs" class="col-5 col-form-label">Absence Journalière :</label>
                 <div class="col">
-                    <input type="date" name="date" id="dateAbs" required class="form-control">
+                    <input type="date" name="date" id="dateAbs" min="2020-08-01" max="2021-07-31" required class="form-control">
                 </div>
             </div>
                 <!--    <label>Absence Plagiaire :</label>-->
@@ -90,4 +90,22 @@ Convocations sportives
         </form>
     </div>
 </div>
+
+<script>
+    var today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[type=date]').setAttribute('min', today);
+
+    var date = document.querySelector('input[type=date]');
+    function weekEnd(e) {
+        var jour = new Date(e.target.value).getUTCDay();
+        if( jour == 0 || jour == 6 ){
+            e.target.setCustomValidity('');
+        } else {
+            e.target.setCustomValidity('Veuillez choisir une date valide (Samedi ou Dimanche)');
+        }
+    }
+    date.addEventListener('change',weekEnd);
+</script>
+
 {% endblock %}
+

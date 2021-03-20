@@ -60,6 +60,13 @@ class Joueur extends Modele {
         $this->executerRequete($sql, array($idJoueur));
     }
 
+    public function retirerLicence($idJoueur) {
+        $sql = 'UPDATE T_JOUEUR'
+            . ' SET Licencie = "non"'
+            . ' WHERE (IdJoueur = ?)';
+        $this->executerRequete($sql, array($idJoueur));
+    }
+
     public function supprimerJoueur($idJoueur) {
         $sql = 'DELETE FROM T_JOUEUR'
             . ' WHERE (IdJoueur = ?)';

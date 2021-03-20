@@ -39,5 +39,10 @@ class ControleurMenuCompte {
         header("Location:index.php?action=menuCompte");
     }
 
+    public function retirerLicence($idJoueur) {
+        $this->joueur->retirerLicence($idJoueur);
+        header("Location:index.php?action=menuCompte");
+    }
+
 
 }

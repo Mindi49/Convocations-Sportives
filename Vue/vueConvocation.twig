@@ -20,10 +20,12 @@ Convocations sportives
                         <td>{{ convocation['Competition'] }} - {{ convocation['Equipe'] }} (le {{ convocation['Date'] }})</td>
                         <td><form method="post" action="index.php?action=supprimerConvocation">
                                 <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button></form></td>
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-user-slash"></i></button></form>
+                        </td>
                         <td><form method="post" action="index.php?action=publier">
-                            <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button></form></td>
+                                <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button></form>
+                        </td>
 
                     </tr>
                     {% else %}
@@ -40,7 +42,7 @@ Convocations sportives
     <div class="col">
         <h1>Convocations Publiées</h1>
         <table class="table border table-striped table-hover">
-            {% for convocationsPubliee in convocationPubliees %}
+            {% for convocationPubliee in convocationsPubliees %}
                 <tr>
                     <td>{{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date'] }})</td>
                     <td><form method="post" action="index.php?action=depublier">

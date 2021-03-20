@@ -47,6 +47,7 @@ class Routeur {
                 }
                 // JOUEUR - Menu Compte
                 else if ($_GET['action'] == 'supprimerJoueur') {
+                    $idJoueur = $this->getParametre($_POST, 'idJoueur');
                     $this->ctrlMenuCompte->supprimerJoueur($idJoueur);
                 }
                 else if ($_GET['action'] == 'ajouterJoueur') {
@@ -59,6 +60,10 @@ class Routeur {
                 else if ($_GET['action'] == 'ajouterLicence') {
                     $idJoueur = $this->getParametre($_POST, 'idJoueur');
                     $this->ctrlMenuCompte->ajouterLicence($idJoueur);
+                }
+                else if ($_GET['action'] == 'retirerLicence') {
+                    $idJoueur = $this->getParametre($_POST, 'idJoueur');
+                    $this->ctrlMenuCompte->retirerLicence($idJoueur);
                 }
                 // CATEGORIE - Accueil pour l'instant
                 else if ($_GET['action'] == 'supprimerCategorie') {
