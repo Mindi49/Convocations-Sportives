@@ -1,10 +1,18 @@
 {% extends "gabarit.twig" %}
 
 {% block title %}
-    Convocations sportives
+    Convocations sportives - Erreur
 {% endblock %}
 
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>ERREUR :</strong> Une erreur est survenue
+{% block contenu %}
+
+{############# ERREUR #############}
+<div class="alert alert-danger alert-dismissible fade show mt-5" role="alert">
+    <strong>ERREUR :</strong> <br>
+    Une erreur est survenue
+    <br>
     {{ msgErreur }}
 </div>
+
+
+{% endblock %}

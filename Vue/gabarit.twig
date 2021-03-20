@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
     <link rel="stylesheet" href="Contenu/style.css">
 
+    <link rel="shortcut icon" type="image/x-icon" href="Contenu/favicon.ico">
+
+
     <title>{% block title %}{% endblock %}</title>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #001D6E">
@@ -43,10 +47,17 @@
     <div class="container">
         {% block contenu %}{% endblock %}
     </div>
-    <!-- #contenu -->
-    <footer>Site de gestion de convocations sportives réalisé avec PHP, HTML5 et CSS. </footer>
-<!-- #global -->
 
+    <footer>Site de gestion de convocations sportives réalisé avec PHP, HTML5 et CSS. </footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+{#############  CHANGEMENT D'ICÔNE 'SE CONNECTER' #############}
 <script>
     function changeIcon(e,iconLock) {
         let lock = e.firstChild.classList;
@@ -56,8 +67,5 @@
     }
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
-    crossorigin="anonymous"></script>
 </body>
 </html>

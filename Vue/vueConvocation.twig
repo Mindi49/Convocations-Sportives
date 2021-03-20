@@ -4,17 +4,14 @@
     active
 {% endblock %}
 
-
 {% block title %}
-Convocations sportives
+    Convocations sportives - Convocations
 {% endblock %}
 
 {% block contenu %}
-<!---------------------- CONVOCATION ---------------------->
 
-<!-- voir la liste des convocs pour un match (tous les joueurs qui sont convoqués) -->
-<!-- voir la liste des convocs pour un joueur (tous les matchs auxquels est convoqué le joueur) -->
-<!-- ici la liste de toutes les convocs, le joueur et le match -->
+{############# CONVOCATIONS #############}
+
 <div class="row pt-5">
     <div class="row">
         <h1 class="col-5">Convocations par match</h1>
@@ -66,6 +63,7 @@ Convocations sportives
         </table>
     </div>
 </div>
+
 
 <div class="row pt-5">
     <h1>Convocations Publiées</h1>
@@ -130,9 +128,10 @@ Convocations sportives
                 </select>
             </div>
         </div>
-        <div class="row">
 
-            <div class="col-6">
+        <div id="joueursConvoques">
+            <div class="row">
+                <div class="col-6">
                     {% for i in 1..7 %}
                         <div class="form-group row">
                             <div class="input-group mb-2">
@@ -150,25 +149,26 @@ Convocations sportives
                             </div>
                         </div>
                     {% endfor %}
-            </div>
-            <div class="col-6">
-                {% for i in 8..14 %}
-                    <div class="form-group row">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend col-2">
-                                <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
-                            </div>
-                            <div class="col">
-                                <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
-                                    <option value="" selected>choix</option>
-                                    {% for joueur in joueurs %}
-                                        <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
-                                    {% endfor %}
-                                </select>
+                </div>
+                <div class="col-6">
+                    {% for i in 8..14 %}
+                        <div class="form-group row">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend col-2">
+                                    <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
+                                </div>
+                                <div class="col">
+                                    <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
+                                        <option value="" selected>choix</option>
+                                        {% for joueur in joueurs %}
+                                            <option value="{{ joueur['IdJoueur'] }}">{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
         <div class="form-group row justify-content-center mt-2">
@@ -176,6 +176,41 @@ Convocations sportives
         </div>
     </form>
 </div>
+
+
+
+{#############  CHOIX DES JOUEURS CONVOQUES SANS DOUBLON #############}
+
+<script>
+    let selects = document.querySelectorAll('#joueursConvoques select');
+
+    selects.forEach(function (select) {
+        let actualSelectedOption = select.options[select.selectedIndex];
+
+        select.addEventListener('change', function(e) {
+            let t = e.target;
+            processChange(actualSelectedOption,t.options[t.selectedIndex],t);
+            actualSelectedOption = t.options[t.selectedIndex];
+        });
+    });
+
+    function processChange(oldValue,newValue,target) {
+        selects.forEach(function (s) {
+            if(s != target) {
+                // rajout de l'ancienne option dans les autres select
+                if(oldValue.value)
+                    s.appendChild(oldValue.cloneNode(true));
+
+                // suppression de la nouvelle option dans les autres select
+                for (let optionsKey in s.options) {
+                    if (typeof s.options[optionsKey] !== 'undefined' && newValue.value && s.options[optionsKey].value === newValue.value) {
+                        s.removeChild(s.options[optionsKey]);
+                    }
+                }
+            }
+        });
+    }
+</script>
 
 {% endblock %}
 
