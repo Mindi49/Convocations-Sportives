@@ -25,9 +25,11 @@
             <thead>
             <tr>
                 <th>Convocation</th>
+                {% if role == 'E' %}
                 <th>Modifier</th>
                 <th>Publier</th>
                 <th>Supprimer</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -37,6 +39,7 @@
                             <a href="index.php?action=informationsConvocation&num={{ convocation['NumConvoc'] }}" class="btn" role="button" style="text-align: left; width: 100%">
                                 {{ convocation['Competition'] }} - {{ convocation['Equipe'] }} (le {{ convocation['Date']|date("d/m/Y") }})</a>
                         </td>
+                        {% if role == 'E' %}
                         <td>
                             <form method="post" action="index.php?action=accesModifierConvocation&num={{ convocation['NumConvoc'] }}">
                                 <button type="submit" class="btn btn-outline-dark border-0" {% if convocation['Publie'] %} hidden {% endif %}><i class="fa fa-pen"></i></button>
@@ -53,6 +56,7 @@
                                 <button type="submit" class="btn btn-outline-danger border-0"><i class="fa fa-trash-alt"></i></button>
                             </form>
                         </td>
+                        {% endif %}
                     </tr>
                     {% else %}
                     <tr>
@@ -72,16 +76,20 @@
             <thead>
             <tr>
                 <th>Convocation Publiée</th>
+                {% if role == 'E' %}
                 <th>Dépublier</th>
+                {% endif %}
             </tr>
             </thead>
             {% for convocationPubliee in convocationsPubliees %}
                 <tr>
                     <td><a href="index.php?action=informationsConvocation&num={{ convocationPubliee['NumConvoc'] }}" class="btn" role="button" style="text-align: left; width: 100%">
                             {{ convocationPubliee['Competition'] }} - {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date']|date("d/m/Y") }})</a></td>
+                    {% if role == 'E' %}
                     <td><form method="post" action="index.php?action=depublier">
                             <input type="hidden" name="num" value="{{ convocationPubliee['NumConvoc'] }}" />
                             <button type="submit" class="btn btn-outline-secondary border-0"><i class="fa fa-eye-slash"></i></button></form></td>
+                    {% endif %}
                 </tr>
                 {% else %}
                     <tr>
@@ -114,7 +122,7 @@
 {#    </div>#}
 {#</div>#}
 
-
+{% if role == 'E' %}
 <div class="row pt-5">
     <h1>Ajouter une Convocation</h1>
     <form method="post" action="index.php?action=ajouterConvocation">
@@ -176,7 +184,7 @@
         </div>
     </form>
 </div>
-
+{% endif %}
 
 
 {#############  CHOIX DES JOUEURS CONVOQUES SANS DOUBLON #############}

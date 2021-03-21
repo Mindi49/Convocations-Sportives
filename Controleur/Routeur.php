@@ -16,7 +16,6 @@ class Routeur {
     private $ctrlAbsence;
     private $ctrlConnexion;
 
-
     public function __construct() {
         $this->ctrlAccueil = new ControleurAccueil();
         $this->ctrlMenuCompte = new ControleurMenuCompte();
@@ -42,8 +41,16 @@ class Routeur {
                 else if ($_GET['action'] == 'absence') {
                     $this->ctrlAbsence->absence();
                 }
+                else if ($_GET['action'] == 'afficherConnexion') {
+                    $this->ctrlConnexion->afficherConnexion();
+                }
                 else if ($_GET['action'] == 'connexion') {
-                    $this->ctrlConnexion->connexion();
+                    $nomUtilisateur = $this->getParametre($_POST, 'nomUtilisateur');
+                    $mdp = $this->getParametre($_POST, 'mdp');
+                    $this->ctrlConnexion->connexion($nomUtilisateur,$mdp);
+                }
+                else if ($_GET['action'] == 'deconnexion') {
+                    $this->ctrlConnexion->deconnexion();
                 }
                 // JOUEUR - Menu Compte
                 else if ($_GET['action'] == 'supprimerJoueur') {

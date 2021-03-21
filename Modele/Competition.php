@@ -5,7 +5,7 @@ require_once 'Modele/Modele.php';
 class Competition extends Modele {
 
     public function getCompetitions() {
-        $sql = 'SELECT * FROM T_COMPETITION';
+        $sql = 'SELECT * FROM T_COMPETITION ORDER BY Nom ASC';
         $compet = $this->executerRequete($sql);
         return $compet->fetchAll();
     }

@@ -16,7 +16,7 @@ class Match extends Modele {
     }
 
     public function getMatchs() {
-        $sql = 'SELECT * FROM T_MATCH';
+        $sql = 'SELECT * FROM T_MATCH ORDER BY Date';
         $categ = $this->executerRequete($sql);
         return $categ->fetchAll();
     }

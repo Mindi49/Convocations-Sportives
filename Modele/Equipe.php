@@ -4,7 +4,7 @@ require_once 'Modele/Modele.php';
 
 class Equipe extends Modele {
     public function getEquipes() {
-        $sql = 'SELECT * FROM T_EQUIPE';
+        $sql = 'SELECT * FROM T_EQUIPE ORDER BY Nom';
         $compet = $this->executerRequete($sql);
         return $compet->fetchAll();
     }

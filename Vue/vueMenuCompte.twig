@@ -12,7 +12,12 @@
 
 
 {############# ACCUEIL #############}
-
+{% if role != 'V' %}
+    <div class="alert alert-success alert-dismissible fade show mt-5 mb-0" role="alert">
+        <strong>Bienvenue {{ nomUtilisateur }}</strong>, vous êtes connecté en tant {% if role == 'S'%} que <strong>Secrétaire</strong>.{% else %} qu'<strong>Entraîneur</strong>.{% endif %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
 <div class="row pt-5">
     <div class="col-6">
         <h1>Joueurs du Club</h1>
@@ -24,7 +29,9 @@
                         <th>Nom</th>
                         <th>Categorie</th>
                         <th>Licencie</th>
+                        {% if role == 'S' %}
                         <th>Action</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -34,10 +41,12 @@
                         <td>{{ joueur['Nom'] }}</td>
                         <td>{{ joueur['Categorie'] }}</td>
                         <td>{{ joueur['Licencie'] }}</td>
+                        {% if role == 'S' %}
                         <td><form method="post" action="index.php?action=supprimerJoueur">
                                 <input type="hidden" name="idJoueur" value="{{ joueur['IdJoueur'] }}" />
                                 <button type="submit" class="btn btn-outline-danger"><i class="fa fa-user-slash"></i></button>
                             </form></td>
+                        {% endif %}
                     </tr>
                     {% else %}
                     <tr>
@@ -48,6 +57,7 @@
             </table>
         </div>
 
+        {% if role == 'S' %}
         <div class="row pt-5 mb-5">
             <h1>Ajouter un joueur</h1>
             <form method="post" action="index.php?action=ajouterJoueur">
@@ -92,8 +102,9 @@
                 </div>
             </form>
         </div>
-    </div>
+        {% endif %}
 
+    </div>
 
     <div class="offset-1 col-5">
         <div class="row">
@@ -118,6 +129,7 @@
             </table>
         </div>
 
+        {% if role == 'S' %}
         <div class="row pt-5">
             <h1>Ajouter une licence</h1>
             <form method="post" action="index.php?action=ajouterLicence">
@@ -152,6 +164,7 @@
                 </div>
             </form>
         </div>
+        {% endif %}
     </div>
 </div>
 

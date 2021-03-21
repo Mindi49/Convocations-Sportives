@@ -28,12 +28,13 @@
                     <th>Heure</th>
                     <th>Terrain</th>
                     <th>Site</th>
+                    {% if role == 'S' %}
                     <th>Modifier</th>
                     <th>Supprimer</th>
+                    {% endif %}
                 </tr>
             </thead>
-            <tbody>
-
+            <tbody style="font-size: 12pt">
             {% for match in matchs %}
                 <tr>
                     <td>{{ match['Categorie'] }}</td>
@@ -44,6 +45,7 @@
                     <td>{{ match['Heure'] }}</td>
                     <td>{{ match['Terrain'] }}</td>
                     <td>{{ match['Site'] }}</td>
+                    {% if role == 'S' %}
                     <td><form method="post" action="index.php?action=accesModifierMatch&num={{ match['NumMatch'] }}">
                             <button type="submit" class="btn btn-outline-dark border-0"><i class="fa fa-pen"></i></button>
                         </form></td>
@@ -51,6 +53,7 @@
                             <input type="hidden" name="num" value="{{ match['NumMatch'] }}" />
                             <button type="submit" class="btn btn-danger border-0"><i class="fa fa-times"></i></button>
                         </form></td>
+                    {% endif %}
                 </tr>
             {% else %}
                 <tr>
@@ -62,7 +65,7 @@
     </div>
 </div>
 
-
+{% if role == 'S' %}
 <div class="row pt-5">
     <h1>Programmer un Match</h1>
     <form method="post" action="index.php?action=ajouterMatch">
@@ -137,7 +140,7 @@
         </div>
     </form>
 </div>
-
+{% endif %}
 
 <script>
     // var today = new Date().toISOString().split('T')[0];

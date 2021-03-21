@@ -6,14 +6,14 @@ class Convocation extends Modele {
 
     // récupère toutes les convocations
     public function getConvocations() {
-        $sql = 'SELECT * FROM T_CONVOCATION C JOIN T_MATCH M ON M.NumMatch = C.NumMatch ';
+        $sql = 'SELECT * FROM T_CONVOCATION C JOIN T_MATCH M ON M.NumMatch = C.NumMatch ORDER BY Date';
         $convocationsMatch = $this->executerRequete($sql);
         return $convocationsMatch->fetchAll();
     }
 
     // récupère toutes les convocations publiées
      public function getConvocationsPubliees() {
-         $sql = 'SELECT * FROM T_CONVOCATION C JOIN T_MATCH M ON M.NumMatch = C.NumMatch WHERE Publie = TRUE';
+         $sql = 'SELECT * FROM T_CONVOCATION C JOIN T_MATCH M ON M.NumMatch = C.NumMatch WHERE Publie = TRUE ORDER BY Date';
          $convocationsMatch = $this->executerRequete($sql);
          return $convocationsMatch->fetchAll();
      }
@@ -32,7 +32,7 @@ class Convocation extends Modele {
     // récupère tous les joueurs convoqués à un match
      public function getJoueursConvoques($numConvoc) {
         $sql = 'SELECT * FROM T_CONVOCATION_JOUEUR C JOIN T_JOUEUR J ON C.IdJoueur = J.IdJoueur '
-            . ' WHERE NumConvoc = ?';
+            . ' WHERE NumConvoc = ? ORDER BY Prenom,Nom';
         $convocationsMatch = $this->executerRequete($sql, array($numConvoc));
         return $convocationsMatch->fetchAll();
     }

@@ -137,6 +137,12 @@
 
 
 {############# CONVOCATION #############}
+{% if erreurs %}
+    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <strong>Une erreur est survenue :</strong> {{ erreurs }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
 
 <div class="bs-callout" style="border-left-color: #001D6E">
     Bienvenue sur ce site de convocations sportives

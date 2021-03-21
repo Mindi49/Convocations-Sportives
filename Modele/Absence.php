@@ -34,7 +34,7 @@ class Absence extends Modele {
     }
 
     public function getAbsences() {
-        $sql = 'SELECT A.IdJoueur as IdJoueur,Nom,Prenom,Date,Motif FROM T_JOUEUR J JOIN T_ABSENCE A ON J.IdJoueur = A.IdJoueur';
+        $sql = 'SELECT A.IdJoueur as IdJoueur,Nom,Prenom,Date,Motif FROM T_JOUEUR J JOIN T_ABSENCE A ON J.IdJoueur = A.IdJoueur ORDER BY Date';
         $absence = $this->executerRequete($sql);
         return $absence->fetchAll();
     }

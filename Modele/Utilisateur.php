@@ -4,7 +4,7 @@ require_once 'Modele/Modele.php';
 
 class Utilisateur extends Modele {
     public function getUtilisateurs() {
-        $sql = 'SELECT * FROM T_UTILISATEUR';
+        $sql = 'SELECT * FROM T_UTILISATEUR ORDER BY NomUtilisateur';
         $utilisateurs = $this->executerRequete($sql);
         return $utilisateurs->fetchAll();
     }
@@ -18,7 +18,7 @@ class Utilisateur extends Modele {
             throw new Exception("Nom d'utilisateur ou mot de passe incorrecte, veuillez réessayer");
     }
 
-    public function getRole($npm,$mdp) {
+    public function getRole($nom,$mdp) {
         $sql = 'SELECT * FROM T_UTILISATEUR WHERE NomUtilisateur = ? AND Mdp = ?';
         $convocation = $this->executerRequete($sql, array($nom,$mdp));
         if ($convocation->rowCount() > 0)
