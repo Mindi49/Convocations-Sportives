@@ -20,17 +20,17 @@
 {% endif %}
 <div class="row pt-5">
     <div class="col-6">
-        <h1>Joueurs du Club</h1>
+        <h1 class="mb-3">Joueurs du club</h1>
         <div class="row">
             <table class="table border table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Prenom</th>
+                        <th>Prénom</th>
                         <th>Nom</th>
-                        <th>Categorie</th>
-                        <th>Licencie</th>
+                        <th>Catégorie</th>
+                        <th>Licence</th>
                         {% if role == 'S' %}
-                        <th>Action</th>
+                        <th class="text-center">Supprimer</th>
                         {% endif %}
                     </tr>
                 </thead>
@@ -40,26 +40,27 @@
                         <td>{{ joueur['Prenom'] }}</td>
                         <td>{{ joueur['Nom'] }}</td>
                         <td>{{ joueur['Categorie'] }}</td>
-                        <td>{{ joueur['Licencie'] }}</td>
+                        <td>{{ joueur['Licence'] }}</td>
                         {% if role == 'S' %}
-                        <td><form method="post" action="index.php?action=supprimerJoueur">
+                        <td class="text-center"><form method="post" action="index.php?action=supprimerJoueur">
                                 <input type="hidden" name="idJoueur" value="{{ joueur['IdJoueur'] }}" />
-                                <button type="submit" class="btn btn-outline-danger"><i class="fa fa-user-slash"></i></button>
+                                <button type="submit" class="btn btn-outline-danger border-0"><i class="fa fa-user-slash"></i></button>
                             </form></td>
                         {% endif %}
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="5" class="text-center">Aucun convocation en cours</td>
+                        <td colspan="5" class="text-center">Aucun joueur</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-
+    </div>
+    <div class="offset-1 col-5"
         {% if role == 'S' %}
         <div class="row pt-5 mb-5">
-            <h1>Ajouter un joueur</h1>
+            <h1 class="mb-3">Ajouter un joueur</h1>
             <form method="post" action="index.php?action=ajouterJoueur">
                 <div class="form-group row">
                     <label for="nomJoueur" class="col-4 col-form-label">Nom : </label>
@@ -75,7 +76,7 @@
                 </div>
 
                 <div class="form-group row mt-2">
-                    <label for="categorieJoueur" class="col-4 col-form-label">Categorie : </label>
+                    <label for="categorieJoueur" class="col-4 col-form-label">Catégorie : </label>
                     <div class="col">
                         <select name="categorie" id="categorieJoueur" class="form-select" >
                             {% for categorie in categories %}
@@ -85,87 +86,20 @@
                     </div>
                 </div>
                 <div class="form-group row mt-2">
-                    <label class="col-4 col-form-label">Licencié au club : </label>
+                    <label for="licence" class="col-4 col-form-label">Type de licence : </label>
                     <div class="col">
-                        <div class="form-group row">
-                            <label for="oui" class="col-form-label col-3">
-                                <input type="radio" name="licencie" id="oui" value="oui" class="form-check-input mr-1"> Oui
-                            </label>
-                            <label for="non" class="col-form-label offset-1 col-3">
-                                <input type="radio" name="licencie" id="non" value="non" class="form-check-input mr-1" checked> Non
-                            </label>
-                        </div>
+                        <input type="text" name="licence" id="licence" class="form-control" value="Libre" required>
                     </div>
                 </div>
-                <div class="form-group row justify-content-center mt-2">
+
+                <div class="form-group row justify-content-center mt-3">
                     <button type="submit" class="btn btn-primary col-5">Ajouter</button>
                 </div>
             </form>
         </div>
         {% endif %}
-
     </div>
 
-    <div class="offset-1 col-5">
-        <div class="row">
-            <h1>Joueurs Licenciés</h1>
-            <table class="table border table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Prenom</th>
-                        <th>Nom</th>
-                        <th>Categorie</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for licencie in licencies %}
-                        <tr>
-                            <td>{{ licencie['Prenom'] }}</td>
-                            <td>{{ licencie['Nom'] }}</td>
-                            <td>{{ licencie['Categorie'] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        {% if role == 'S' %}
-        <div class="row pt-5">
-            <h1>Ajouter une licence</h1>
-            <form method="post" action="index.php?action=ajouterLicence">
-                <div class="form-group row">
-                    <div class="col-6">
-                        <select name="idJoueur" id="joueurLicence" class="form-select">
-                            {% for nonlicencie in nonlicencies %}
-                                <option value="{{ nonlicencie['IdJoueur'] }}">{{ nonlicencie['Prenom'] }} {{ nonlicencie['Nom'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="offset-1 col-5">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-id-badge"></i>&nbsp;&nbsp;Ajouter</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="row pt-5">
-            <h1>Retirer une licence</h1>
-            <form method="post" action="index.php?action=retirerLicence">
-                <div class="form-group row">
-                    <div class="col-6">
-                        <select name="idJoueur" id="joueurLicence" class="form-select">
-                            {% for licencie in licencies %}
-                                <option value="{{ licencie['IdJoueur'] }}">{{ licencie['Prenom'] }} {{ nonlicencie['Nom'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="offset-1 col-5">
-                        <button type="submit" class="btn btn-danger"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Retirer</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        {% endif %}
-    </div>
 </div>
 
 

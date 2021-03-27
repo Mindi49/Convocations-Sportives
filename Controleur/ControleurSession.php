@@ -8,6 +8,4 @@ abstract class ControleurSession {
     public function __construct() {
         $this->session = new Session();
     }
-
-
 }

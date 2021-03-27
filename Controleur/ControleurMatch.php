@@ -13,7 +13,6 @@ class ControleurMatch extends ControleurSession {
     private $competition;
     private $equipe;
 
-
     public function __construct() {
         parent::__construct();
         $this->match = new Match();
@@ -38,13 +37,9 @@ class ControleurMatch extends ControleurSession {
     public function supprimerMatch($numMatch) {
         if ($this->session->estSecretaire()) {
             $this->match->supprimerMatch($numMatch);
-            header("Location:index.php?action=match");
-        }
-        else if ($this->session->estEntraineur()) {
-            header("Location:index.php?action=match");
         }
         else {
-            header("Location:index.php?action=connexion");
+            echo json_encode(array('warning' => 'Vous n\'avez pas le droit de supprimer un match.'));
         }
     }
 
@@ -57,7 +52,7 @@ class ControleurMatch extends ControleurSession {
             header("Location:index.php?action=match");
         }
         else {
-            header("Location:index.php?action=connexion");
+            header("Location:index.php?action=afficherConnexion");
         }
     }
 
@@ -74,7 +69,7 @@ class ControleurMatch extends ControleurSession {
             header("Location:index.php?action=match");
         }
         else {
-            header("Location:index.php?action=connexion");
+            header("Location:index.php?action=afficherConnexion");
         }
     }
 
@@ -87,9 +82,52 @@ class ControleurMatch extends ControleurSession {
             header("Location:index.php?action=match");
         }
         else {
-            header("Location:index.php?action=connexion");
+            header("Location:index.php?action=afficherConnexion");
         }
 
     }
 
+    public function importerMatch($fichier) {
+        if ($this->session->estSecretaire()) {
+            $matchsImportes = array();
+
+            if (($matchs = fopen($fichier['tmp_name'], "r")) !== FALSE) {
+                while (($ligne = fgetcsv($matchs, 1000, ",")) !== FALSE) {
+                   if (count($ligne) !== 8) {
+                       fclose($matchs);
+                       throw new Exception('Une ligne du fichier est invalide. Le nombre de paramètres fournis est différent de celui attendu.');
+                   }
+                   else {
+                       $categorie = $ligne[0];
+                       $competition = $ligne[1];
+                       $equipe = $ligne[2];
+                       $equipeAdverse = $ligne[3];
+                       $date = $ligne[4];
+                       $heure = $ligne[5];
+                       $terrain = $ligne[6];
+                       $site = $ligne[7];
+
+                       if (!$categorie || !$competition || !$equipe || !$equipeAdverse || !$date || !$heure) {
+                           fclose($matchs);
+                           throw new Exception('Une ligne du fichier est invalide. Certains paramètres requis sont manquants.');
+                       }
+                       else {
+                           array_push($matchsImportes, array('categorie' => $categorie, 'competition' => $competition, 'equipe' => $equipe, 'equipeAdverse' => $equipeAdverse, 'date' => $date, 'heure' => $heure, 'terrain' => $terrain, 'site' => $site));
+                       }
+                   }
+                }
+                foreach ($matchsImportes as $matchsImporte) {
+                    $this->match->ajouterMatch($matchsImporte['categorie'], $matchsImporte['competition'], $matchsImporte['equipe'], $matchsImporte['equipeAdverse'], $matchsImporte['date'], $matchsImporte['heure'], $matchsImporte['terrain'], $matchsImporte['site']);
+                }
+                fclose($matchs);
+            }
+            header("Location:index.php?action=match");
+        }
+        else if ($this->session->estEntraineur()) {
+            header("Location:index.php?action=match");
+        }
+        else {
+            header("Location:index.php?action=afficherConnexion");
+        }
+    }
 }

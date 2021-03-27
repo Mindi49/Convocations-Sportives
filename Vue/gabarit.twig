@@ -7,9 +7,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
     <link rel="stylesheet" href="Contenu/style.css">
-
     <link rel="shortcut icon" type="image/x-icon" href="Contenu/favicon.ico">
-
 
     <title>{% block title %}{% endblock %}</title>
 
@@ -17,7 +15,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #001D6E">
         <div class="container">
-            <a class="navbar-brand" href="index.php"><i class="fas fa-chalkboard-teacher"></i>&nbsp;&nbsp;Site de Convocations Sportives </a>
+            <a class="navbar-brand" href="index.php"><img src="Contenu/favicon.ico" style="width: 30px; height: 27px;"></img>&nbsp;&nbsp;Site de Convocations Sportives </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -36,6 +34,9 @@
                     <li class="nav-item px-1">
                         <a class="nav-link {% block isAbsence %}{% endblock %}" href="index.php?action=absence"><i class="fas fa-id-card-alt"></i>&nbsp;&nbsp;Absences</a>
                     </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link {% block isAnnexe %}{% endblock %}" href="index.php?action=annexe"><i class="fas fa-wrench"></i>&nbsp;&nbsp;Annexe</a>
+                    </li>
                 </ul>
             </div>
             {% endif %}
@@ -50,10 +51,11 @@
     </nav>
 
     <div class="container">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         {% block contenu %}{% endblock %}
     </div>
 
-    <footer>Site de gestion de convocations sportives réalisé avec PHP, HTML5 et CSS. </footer>
+    <footer class="mt-5 pt-5 text-black-50 text-center bottom-0">Site de gestion de convocations sportives réalisé avec PHP, HTML5 et CSS.</footer>
 
 
 
@@ -61,22 +63,7 @@
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-{#############  CHANGEMENT D'ICÔNE 'SE CONNECTER' #############}
-<script>
-    function changeIcon(e,iconLock) {
-        let lock = e.firstChild.classList;
-        if(iconLock) {
-            lock.replace("fa-unlock", "fa-lock");
-            lock.replace("fa-door-open","fa-door-closed");
-        }
-        else {
-            lock.replace("fa-lock","fa-unlock");
-            lock.replace("fa-door-closed", "fa-door-open");
-
-        }
-    }
-</script>
+<script src="JS/changementIcone.js"></script>
 
 </body>
 </html>

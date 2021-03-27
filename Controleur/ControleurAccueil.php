@@ -13,7 +13,6 @@ class ControleurAccueil extends ControleurSession {
     private $categorie;
     private $convocation;
 
-
     public function __construct() {
         parent::__construct();
         $this->competition = new Competition();
@@ -22,8 +21,7 @@ class ControleurAccueil extends ControleurSession {
         $this->categorie = new Categorie();
     }
 
-
-    public function accueil($erreurs = array()) {
+    public function accueil() {
         $competitions = $this->competition->getCompetitions();
         $equipes = $this->equipe->getEquipes();
         $convocations = $this->convocation->getConvocations();
@@ -32,38 +30,7 @@ class ControleurAccueil extends ControleurSession {
 
         $vue = new Vue("Accueil");
 
-        $vue->generer(array('categories' => $categories, 'competitions' => $competitions, 'equipes' => $equipes, 'convocations' => $convocations, 'convocationsPubliees' => $convocationsPubliees, 'erreurs' => $erreurs, 'role' => $this->session->getRole()));
-    }
-
-
-
-    public function supprimerCategorie($nom) {
-        $this->categorie->supprimerCategorie($nom);
-        header("Location:index.php");
-    }
-    public function ajouterCategorie($nom) {
-        $this->categorie->ajouterCategorie($nom);
-        header("Location:index.php");
-    }
-
-
-    public function supprimerCompetition($nom) {
-        $this->competition->supprimerCompetition($nom);
-        header("Location:index.php");
-    }
-    public function ajouterCompetition($nom) {
-        $this->competition->ajouterCompetition($nom);
-        header("Location:index.php");
-    }
-
-
-    public function supprimerEquipe($nom) {
-        $this->equipe->supprimerEquipe($nom);
-        header("Location:index.php");
-    }
-    public function ajouterEquipe($nom) {
-        $this->equipe->ajouterEquipe($nom);
-        header("Location:index.php");
+        $vue->generer(array('categories' => $categories, 'competitions' => $competitions, 'equipes' => $equipes, 'convocations' => $convocations, 'convocationsPubliees' => $convocationsPubliees, 'role' => $this->session->getRole()));
     }
 
 }

@@ -12,18 +12,11 @@ class Utilisateur extends Modele {
     public function getUtilisateur($nom,$mdp) {
         $sql = 'SELECT * FROM T_UTILISATEUR WHERE NomUtilisateur = ? AND Mdp = ?';
         $convocation = $this->executerRequete($sql, array($nom,$mdp));
-        if ($convocation->rowCount() > 0)
+        if ($convocation->rowCount() > 0) {
             return $convocation->fetch();  // Accès à la première ligne de résultat
-        else
+        }
+        else {
             throw new Exception("Nom d'utilisateur ou mot de passe incorrecte, veuillez réessayer");
-    }
-
-    public function getRole($nom,$mdp) {
-        $sql = 'SELECT * FROM T_UTILISATEUR WHERE NomUtilisateur = ? AND Mdp = ?';
-        $convocation = $this->executerRequete($sql, array($nom,$mdp));
-        if ($convocation->rowCount() > 0)
-            return $convocation->fetch();  // Accès à la première ligne de résultat
-        else
-            throw new Exception("Nom d'utilisateur ou mot de passe incorrecte, veuillez réessayer");
+        }
     }
 }

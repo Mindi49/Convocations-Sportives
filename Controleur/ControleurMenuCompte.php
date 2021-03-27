@@ -9,7 +9,6 @@ class ControleurMenuCompte extends ControleurSession {
     private $joueur;
     private $categorie;
 
-
     public function __construct() {
         parent::__construct();
         $this->joueur = new Joueur();
@@ -22,13 +21,10 @@ class ControleurMenuCompte extends ControleurSession {
             return;
         }
         $joueurs = $this->joueur->getJoueurs();
-        $licencies = $this->joueur->getJoueursLicencies();
-        $nonlicencies = $this->joueur->getJoueursNonLicencies();
         $categories = $this->categorie->getCategories();
         $vue = new Vue("MenuCompte");
-        $vue->generer(array('joueurs' => $joueurs, 'licencies' => $licencies, 'nonlicencies' => $nonlicencies, 'categories' => $categories, 'role' => $this->session->getRole(),'nomUtilisateur' => $this->session->getAttribut("nomUtilisateur")));
+        $vue->generer(array('joueurs' => $joueurs, 'categories' => $categories, 'role' => $this->session->getRole(),'nomUtilisateur' => $this->session->getAttribut("nomUtilisateur")));
     }
-
 
     public function supprimerJoueur($idJoueur) {
         if ($this->session->estSecretaire()) {
@@ -39,48 +35,20 @@ class ControleurMenuCompte extends ControleurSession {
             header("Location:index.php?action=menuCompte");
         }
         else {
-            header("Location:index.php?action=connexion");
+            header("Location:index.php?action=afficherConnexion");
         }
     }
 
-    public function ajouterJoueur($nom,$prenom,$categorie,$licencie) {
+    public function ajouterJoueur($nom,$prenom,$categorie,$licence) {
         if ($this->session->estSecretaire()) {
-            $this->joueur->ajouterJoueur($nom,$prenom,$categorie,$licencie);
+            $this->joueur->ajouterJoueur($nom,$prenom,$categorie,$licence);
             header("Location:index.php?action=menuCompte");
         }
         else if ($this->session->estEntraineur()) {
             header("Location:index.php?action=menuCompte");
         }
         else {
-            header("Location:index.php?action=connexion");
+            header("Location:index.php?action=afficherConnexion");
         }
     }
-
-    public function ajouterLicence($idJoueur) {
-        if ($this->session->estSecretaire()) {
-            $this->joueur->ajouterLicence($idJoueur);
-            header("Location:index.php?action=menuCompte");
-        }
-        else if ($this->session->estEntraineur()) {
-            header("Location:index.php?action=menuCompte");
-        }
-        else {
-            header("Location:index.php?action=connexion");
-        }
-    }
-
-    public function retirerLicence($idJoueur) {
-        if ($this->session->estSecretaire()) {
-            $this->joueur->retirerLicence($idJoueur);
-            header("Location:index.php?action=menuCompte");
-        }
-        else if ($this->session->estEntraineur()) {
-            header("Location:index.php?action=menuCompte");
-        }
-        else {
-            header("Location:index.php?action=connexion");
-        }
-    }
-
-
 }

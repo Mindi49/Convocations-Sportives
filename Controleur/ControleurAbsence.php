@@ -19,10 +19,8 @@ class ControleurAbsence extends ControleurSession {
         if ($this->session->estConnecte()) {
             $joueurs = $this->joueur->getJoueurs();
             $absences = $this->absence->getAbsences();
-            //$absencesDate = $this->absence->getAbsencesDate();
-            //$absencesJoueur = $this->absence->getAbsencesJoueur();
             $vue = new Vue("Absence");
-            $vue->generer(array('joueurs' => $joueurs, 'absences' => $absences, 'role' => $this->session->getRole()));//  'absencesDate' => $absencesDate, 'absencesJoueur' => $absencesJoueur));
+            $vue->generer(array('joueurs' => $joueurs, 'absences' => $absences, 'role' => $this->session->getRole()));
         }
         else {
             header("Location:index.php?action=afficherConnexion");
@@ -38,6 +36,7 @@ class ControleurAbsence extends ControleurSession {
             header("Location:index.php?action=afficherConnexion");
         }
     }
+
     public function ajouterAbsence($idJoueur,$date,$motif) {
         if ($this->session->estConnecte()) {
             $this->absence->ajouterAbsence($idJoueur, $date, $motif);

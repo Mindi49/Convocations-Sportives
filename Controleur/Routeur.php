@@ -5,6 +5,7 @@ require_once 'Controleur/ControleurMatch.php';
 require_once 'Controleur/ControleurConvocation.php';
 require_once 'Controleur/ControleurAbsence.php';
 require_once 'Controleur/ControleurConnexion.php';
+require_once 'Controleur/ControleurAnnexe.php';
 require_once 'Vue/Vue.php';
 
 class Routeur {
@@ -15,6 +16,7 @@ class Routeur {
     private $ctrlMatch;
     private $ctrlAbsence;
     private $ctrlConnexion;
+    private $ctrlAnnexe;
 
     public function __construct() {
         $this->ctrlAccueil = new ControleurAccueil();
@@ -23,182 +25,182 @@ class Routeur {
         $this->ctrlConvocation = new ControleurConvocation();
         $this->ctrlAbsence = new ControleurAbsence();
         $this->ctrlConnexion = new ControleurConnexion();
+        $this->ctrlAnnexe = new ControleurAnnexe();
     }
 
-    // Route une requête entrante : exécution l'action associée
     public function routerRequete() {
         try {
             if (isset($_GET['action'])) {
-                if ($_GET['action'] == 'menuCompte') {
-                    $this->ctrlMenuCompte->menuCompte();
-                }
-                else if ($_GET['action'] == 'convocation') {
-                    $this->ctrlConvocation->convocation();
-                }
-                else if ($_GET['action'] == 'match') {
-                    $this->ctrlMatch->match();
-                }
-                else if ($_GET['action'] == 'absence') {
-                    $this->ctrlAbsence->absence();
-                }
-                else if ($_GET['action'] == 'afficherConnexion') {
-                    $this->ctrlConnexion->afficherConnexion();
-                }
-                else if ($_GET['action'] == 'connexion') {
-                    $nomUtilisateur = $this->getParametre($_POST, 'nomUtilisateur');
-                    $mdp = $this->getParametre($_POST, 'mdp');
-                    $this->ctrlConnexion->connexion($nomUtilisateur,$mdp);
-                }
-                else if ($_GET['action'] == 'deconnexion') {
-                    $this->ctrlConnexion->deconnexion();
-                }
-                // JOUEUR - Menu Compte
-                else if ($_GET['action'] == 'supprimerJoueur') {
-                    $idJoueur = $this->getParametre($_POST, 'idJoueur');
-                    $this->ctrlMenuCompte->supprimerJoueur($idJoueur);
-                }
-                else if ($_GET['action'] == 'ajouterJoueur') {
-                    $nom = $this->getParametre($_POST, 'nom');
-                    $prenom = $this->getParametre($_POST, 'prenom');
-                    $categorie= $this->getParametre($_POST, 'categorie');
-                    $licencie= $this->getParametre($_POST, 'licencie');
-                    $this->ctrlMenuCompte->ajouterJoueur($nom,$prenom,$categorie,$licencie);
-                }
-                else if ($_GET['action'] == 'ajouterLicence') {
-                    $idJoueur = $this->getParametre($_POST, 'idJoueur');
-                    $this->ctrlMenuCompte->ajouterLicence($idJoueur);
-                }
-                else if ($_GET['action'] == 'retirerLicence') {
-                    $idJoueur = $this->getParametre($_POST, 'idJoueur');
-                    $this->ctrlMenuCompte->retirerLicence($idJoueur);
-                }
-                // CATEGORIE - Accueil pour l'instant
-                else if ($_GET['action'] == 'supprimerCategorie') {
-                    $nom = $this->getParametre($_POST,'nom');
-                    $this->ctrlAccueil->supprimerCategorie($nom);
-                }
-                else if ($_GET['action'] == 'ajouterCategorie')  {
-                    $nom = $this->getParametre($_POST,'nom');
-                    $this->ctrlAccueil->ajouterCategorie($nom);
-                }
-                // COMPETITION - Accueil pour l'instant
-                else if ($_GET['action'] == 'supprimerCompetition') {
-                    $nom = $this->getParametre($_POST,'nom');
-                    $this->ctrlAccueil->supprimerCompetition($nom);
-                }
-                else if ($_GET['action'] == 'ajouterCompetition')  {
-                    $nom = $this->getParametre($_POST,'nom');
-                    $this->ctrlAccueil->ajouterCompetition($nom);
-                }
-                // EQUIPE - Accueil pour l'instant
-                else if ($_GET['action'] == 'supprimerEquipe') {
-                    $nom = $this->getParametre($_POST,'nom');
-                    $this->ctrlAccueil->supprimerEquipe($nom);
-                }
-                else if ($_GET['action'] == 'ajouterEquipe')  {
-                    $nom = $this->getParametre($_POST,'nom');
-                    $this->ctrlAccueil->ajouterEquipe($nom);
-                }
+                switch ($_GET['action']) {
+                    // Pages d'accueil
+                    case 'menuCompte' :
+                        $this->ctrlMenuCompte->menuCompte();
+                        break;
+                    case 'convocation' :
+                        $this->ctrlConvocation->convocation();
+                        break;
+                    case 'match' :
+                        $this->ctrlMatch->match();
+                        break;
+                    case 'absence' :
+                        $this->ctrlAbsence->absence();
+                        break;
+                    case 'afficherConnexion' :
+                        $this->ctrlConnexion->afficherConnexion();
+                        break;
+                    case 'connexion' :
+                        $nomUtilisateur = $this->getParametre($_POST, 'nomUtilisateur');
+                        $mdp = $this->getParametre($_POST, 'mdp');
+                        $this->ctrlConnexion->connexion($nomUtilisateur, $mdp);
+                        break;
+                    case 'deconnexion' :
+                        $this->ctrlConnexion->deconnexion();
+                        break;
+                    case 'annexe' :
+                        $this->ctrlAnnexe->annexe();
+                        break;
 
-                // MATCH - Match
-                else if ($_GET['action'] == 'supprimerMatch') {
-                    $numMatch = $this->getParametre($_POST,'num');
-                    $this->ctrlMatch->supprimerMatch($numMatch);
-                }
-                else if ($_GET['action'] == 'ajouterMatch') {
-                    $categorie = $this->getParametre($_POST, 'categorie');
-                    $competition = $this->getParametre($_POST, 'competition');
-                    $idEquipe = $this->getParametre($_POST, 'equipe');
-                    $equipeadv = $this->getParametre($_POST, 'equipeadv');
-                    $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
-                    $heure = $this->getParametre($_POST, 'heure');
-                    $terrain = $this->getParametre($_POST, 'terrain');
-                    $site = $this->getParametre($_POST, 'site');
-                    $this->ctrlMatch->ajouterMatch($categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site);
-                }
-                else if ($_GET['action'] == 'modifierMatch') {
-                    $numMatch = $this->getParametre($_POST, 'num');
-                    $categorie = $this->getParametre($_POST, 'categorie');
-                    $competition = $this->getParametre($_POST, 'competition');
-                    $idEquipe = $this->getParametre($_POST, 'equipe');
-                    $equipeadv = $this->getParametre($_POST, 'equipeadv');
-                    $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
-                    $heure = $this->getParametre($_POST, 'heure');
-                    $terrain = $this->getParametre($_POST, 'terrain');
-                    $site = $this->getParametre($_POST, 'site');
-                    $this->ctrlMatch->modifierMatch($numMatch, $categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site);
-                }
-                else if ($_GET['action'] == 'accesModifierMatch') {
-                    $numMatch = $this->getParametre($_GET, 'num');
-                    $this->ctrlMatch->accesModifierMatch($numMatch);
-                }
-                // ABSENCE - Absence
-                else if ($_GET['action'] == 'supprimerAbsence') {
-                    $idJoueur = $this->getParametre($_POST,'idJoueur');
-                    $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
-                    $this->ctrlAbsence->supprimerAbsence($idJoueur,$date);
-                }
-                else if ($_GET['action'] == 'ajouterAbsence') {
-                    $idJoueur = $this->getParametre($_POST,'idJoueur');
-                    $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
-                    $motif = $this->getParametre($_POST,'motif');
-                    $this->ctrlAbsence->ajouterAbsence($idJoueur,$date,$motif);
-                }
+                    // JOUEUR - Menu Compte
+                    case 'supprimerJoueur' :
+                        $idJoueur = $this->getParametre($_POST, 'idJoueur');
+                        $this->ctrlMenuCompte->supprimerJoueur($idJoueur);
+                        break;
+                    case 'ajouterJoueur' :
+                        $nom = $this->getParametre($_POST, 'nom');
+                        $prenom = $this->getParametre($_POST, 'prenom');
+                        $categorie = $this->getParametre($_POST, 'categorie');
+                        $licence = $this->getParametre($_POST, 'licence');
+                        $this->ctrlMenuCompte->ajouterJoueur($nom, $prenom, $categorie, $licence);
+                        break;
 
-                // CONVOCATION - Convocation
-                // TODO : voir la suppression d'un joueur convoqué dans l'équipe + celle de toute la convoc (toute l'équipe)
-                // supprime que la convoc d'un joueur pour un match
-                else if ($_GET['action'] == 'supprimerConvocation') {
-                    $numConvocation = $this->getParametre($_POST,'num');
-                    $this->ctrlConvocation->supprimerConvocation($numConvocation);
-                }
-                else if ($_GET['action'] == 'supprimerConvocationsJoueur') {
-                    $idJoueur = $this->getParametre($_POST,'idJoueur');
-                    $this->ctrlConvocation->supprimerConvocationsJoueur($idJoueur);
-                }
-                else if ($_GET['action'] == 'ajouterConvocation') {
-                    $numMatch = $this->getParametre($_POST, 'num');
-                    $numConvocation = $this->ctrlConvocation->ajouterConvocation($numMatch);
-                    for ($i = 1; $i < 15; $i++) {
-                        $idJoueur = $this->getParametre($_POST, 'idJoueur' . $i);
-                        if(!empty($idJoueur))
-                            $this->ctrlConvocation->ajouterJoueurConvoque($numConvocation,$idJoueur);
-                    }
-                    header("Location:index.php?action=convocation");
-                }
-                else if ($_GET['action'] == 'accesModifierConvocation') {
-                    $numConvocation = $this->getParametre($_GET, 'num');
-                    $this->ctrlConvocation->accesModifierConvocation($numConvocation);
-                }
-                else if ($_GET['action'] == 'informationsConvocation') {
-                    $numConvocation = $this->getParametre($_GET, 'num');
-                    $this->ctrlConvocation->informationsConvocation($numConvocation);
-                }
-                else if ($_GET['action'] == 'modifierConvocation') {
-                    $numConvocation = $this->getParametre($_POST, 'num');
-                    $numMatch = $this->getParametre($_POST, 'numMatch');
-                    $this->ctrlConvocation->supprimerJoueursConvoques($numConvocation);
-                    $this->ctrlConvocation->modifierConvocation($numConvocation,$numMatch);
-                    for ($i = 1; $i < 15; $i++) {
-                        $idJoueur = $this->getParametre($_POST, 'idJoueur' . $i);
-                        if(isset($idJoueur))
-                            $this->ctrlConvocation->ajouterJoueurConvoque($numConvocation,$idJoueur);
-                    }
-                    header("Location:index.php?action=convocation");
-                }
-                else if ($_GET['action'] == 'publier') {
-                    $numConvocation = $this->getParametre($_POST,'num');
-                    $this->ctrlConvocation->publier($numConvocation);
-                }
-                else if ($_GET['action'] == 'depublier') {
-                    $numConvocation = $this->getParametre($_POST,'num');
-                    $this->ctrlConvocation->depublier($numConvocation);
-                }
+                    // CATEGORIE - Annexe
+                    case 'supprimerCategorie' :
+                        $nom = $this->getParametre($_POST, 'nom');
+                        $this->ctrlAnnexe->supprimerCategorie($nom);
+                        break;
+                    case 'ajouterCategorie' :
+                        $nom = $this->getParametre($_POST, 'nom');
+                        $this->ctrlAnnexe->ajouterCategorie($nom);
+                        break;
 
-            else
-                    throw new Exception("Action non valide");
+                    // COMPETITION - Annexe
+                    case 'supprimerCompetition' :
+                        $nom = $this->getParametre($_POST, 'nom');
+                        $this->ctrlAnnexe->supprimerCompetition($nom);
+                        break;
+                    case 'ajouterCompetition' :
+                        $nom = $this->getParametre($_POST, 'nom');
+                        $this->ctrlAnnexe->ajouterCompetition($nom);
+                        break;
+
+                    // EQUIPE - Annexe
+                    case 'supprimerEquipe' :
+                        $nom = $this->getParametre($_POST, 'nom');
+                        $this->ctrlAnnexe->supprimerEquipe($nom);
+                        break;
+                    case 'ajouterEquipe' :
+                        $nom = $this->getParametre($_POST, 'nom');
+                        $this->ctrlAnnexe->ajouterEquipe($nom);
+                        break;
+
+                    // MATCH - Match
+                    case 'supprimerMatch' :
+                        $numMatch = $this->getParametre($_POST, 'num');
+                        $this->ctrlMatch->supprimerMatch($numMatch);
+                        break;
+                    case 'ajouterMatch' :
+                        $categorie = $this->getParametre($_POST, 'categorie');
+                        $competition = $this->getParametre($_POST, 'competition');
+                        $idEquipe = $this->getParametre($_POST, 'equipe');
+                        $equipeadv = $this->getParametre($_POST, 'equipeadv');
+                        $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
+                        $heure = $this->getParametre($_POST, 'heure');
+                        $terrain = $this->getParametre($_POST, 'terrain');
+                        $site = $this->getParametre($_POST, 'site');
+                        $this->ctrlMatch->ajouterMatch($categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site);
+                        break;
+                    case 'importerMatch':
+                        $fichier = $this->getParametre($_FILES,'fichier');
+                        $this->ctrlMatch->importerMatch($fichier);
+                        break;
+                    case 'modifierMatch' :
+                        $numMatch = $this->getParametre($_POST, 'num');
+                        $categorie = $this->getParametre($_POST, 'categorie');
+                        $competition = $this->getParametre($_POST, 'competition');
+                        $idEquipe = $this->getParametre($_POST, 'equipe');
+                        $equipeadv = $this->getParametre($_POST, 'equipeadv');
+                        $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
+                        $heure = $this->getParametre($_POST, 'heure');
+                        $terrain = $this->getParametre($_POST, 'terrain');
+                        $site = $this->getParametre($_POST, 'site');
+                        $this->ctrlMatch->modifierMatch($numMatch, $categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site);
+                        break;
+                    case 'accesModifierMatch' :
+                        $numMatch = $this->getParametre($_GET, 'num');
+                        $this->ctrlMatch->accesModifierMatch($numMatch);
+                        break;
+
+                    // ABSENCE - Absence
+                    case 'supprimerAbsence' :
+                        $idJoueur = $this->getParametre($_POST, 'idJoueur');
+                        $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
+                        $this->ctrlAbsence->supprimerAbsence($idJoueur, $date);
+                        break;
+                    case 'ajouterAbsence' :
+                        $idJoueur = $this->getParametre($_POST, 'idJoueur');
+                        $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
+                        $motif = $this->getParametre($_POST, 'motif');
+                        $this->ctrlAbsence->ajouterAbsence($idJoueur, $date, $motif);
+                        break;
+
+                    // CONVOCATION - Convocation
+                    case 'supprimerConvocation' :
+                        $numConvocation = $this->getParametre($_POST, 'num');
+                        $this->ctrlConvocation->supprimerConvocation($numConvocation);
+                        break;
+                    case 'supprimerConvocationsJoueur' :
+                        $idJoueur = $this->getParametre($_POST, 'idJoueur');
+                        $this->ctrlConvocation->supprimerConvocationsJoueur($idJoueur);
+                        break;
+                    case 'ajouterConvocation' :
+                        $numMatch = $this->getParametre($_POST, 'num');
+                        $numConvocation = $this->ctrlConvocation->ajouterConvocation($numMatch);
+                        $this->ctrlConvocation->accesModifierConvocation($numConvocation);
+                        break;
+                    case 'accesModifierConvocation' :
+                        $numConvocation = $this->getParametre($_GET, 'num');
+                        $this->ctrlConvocation->accesModifierConvocation($numConvocation);
+                        break;
+                    case 'informationsConvocation' :
+                        $numConvocation = $this->getParametre($_GET, 'num');
+                        $this->ctrlConvocation->informationsConvocation($numConvocation);
+                        break;
+                    case 'modifierConvocation' :
+                        $numConvocation = $this->getParametre($_POST, 'num');
+                        $numMatch = $this->getParametre($_POST, 'numMatch');
+                        $ensIdJoueur = array();
+                        for ($i = 1; $i < 15; $i++) {
+                            $idJoueur = $this->getParametre($_POST, 'idJoueur' . $i);
+                            if (!empty($idJoueur)) {
+                                array_push($ensIdJoueur, $idJoueur);
+                            }
+                        }
+                        $this->ctrlConvocation->modifierConvocation($numConvocation, $numMatch, $ensIdJoueur);
+                        header("Location:index.php?action=convocation");
+                                break;
+                    case 'publier' :
+                        $numConvocation = $this->getParametre($_POST, 'num');
+                        $this->ctrlConvocation->publier($numConvocation);
+                        break;
+                    case 'depublier' :
+                        $numConvocation = $this->getParametre($_POST, 'num');
+                        $this->ctrlConvocation->depublier($numConvocation);
+                        break;
+                    default:
+                        throw new Exception("Action non valide");
+                }
             }
-            else {  // aucune action définie : affichage de l'accueil
+            else {
                 $this->ctrlAccueil->accueil();
             }
         }
@@ -218,8 +220,9 @@ class Routeur {
         if (isset($tableau[$nom])) {
             return $tableau[$nom];
         }
-        else
+        else {
             throw new Exception("Paramètre '$nom' absent");
+        }
     }
 
 }

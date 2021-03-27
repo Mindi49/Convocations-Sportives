@@ -1,20 +1,18 @@
 {% extends "gabarit.twig" %}
 
 {% block isAbsence %}
-active
+    active
 {% endblock %}
 
 {% block title %}
     Convocations sportives - Absences
 {% endblock %}
 
+
 {% block contenu %}
-
-{############# ABSENCES #############}
-
 <div class="row pt-5">
     <div class="col-6">
-        <h1>Liste des Absents</h1>
+        <h1 class="mb-3">Liste des absents</h1>
         <table class="table border table-striped table-hover">
             <thead>
                 <tr>
@@ -22,7 +20,7 @@ active
                     <th>Nom</th>
                     <th>Date</th>
                     <th>Motif</th>
-                    <th>Annuler</th>
+                    <th class="text-center">Annuler</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +30,7 @@ active
                     <td>{{ absence['Nom'] }}</td>
                     <td>{{ absence['Date']|date("d/m/Y") }}</td>
                     <td>{{ absence['Motif'] }}</td>
-                    <td><form method="post" action="index.php?action=supprimerAbsence">
+                    <td class="text-center"><form method="post" action="index.php?action=supprimerAbsence">
                             <input type="hidden" name="idJoueur" value="{{ absence['IdJoueur'] }}" />
                             <input type="hidden" name="date" value="{{ absence['Date'] }}" />
                             <button type="submit" class="btn btn-danger border-0"><i class="fa fa-times"></i></button>
@@ -50,9 +48,9 @@ active
 
 
     <div class="offset-1 col-5">
-        <h1>Ajouter une absence</h1>
+        <h1 class="mb-3">Ajouter une absence</h1>
         <form method="post" action="index.php?action=ajouterAbsence">
-            <div class="form-group row mt-2">
+            <div class="form-group row mt-3">
                 <label for="joueursAbs" class="col-4 col-form-label">Joueur : </label>
                 <div class="col">
                     <select name="idJoueur" id="joueursAbs" class="form-select">
@@ -62,58 +60,38 @@ active
                     </select>
                 </div>
             </div>
-            <label class="form-label">Motif de l'absence : </label>
-            <div class="form-group row">
-                <div class="offset-1 col-4">
-                    <input type="radio" name="motif" id="absent" value="Absent" checked class="form-check-input mr-1"/><label for="absent" >&nbsp;&nbsp;Absent</label>
-                </div>
-                <div class="col">
-                    <input type="radio" name="motif" id="blesse" value="Blessé" class="form-check-input mr-1"/><label for="blesse" >&nbsp;&nbsp;Blessé</label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="offset-1 col-4">
-                    <input type="radio" name="motif" id="nonlicencie" value="Non licencié"  class="form-check-input mr-1"/><label for="nonlicencie">&nbsp;&nbsp;Non licencié</label>
-                </div>
-                <div class="col">
-                    <input type="radio" name="motif" id="suspendu" value="Suspendu" class="form-check-input mr-1" /><label for="suspendu" >&nbsp;&nbsp;Suspendu</label>
+            <label class="form-label mt-3">Motif de l'absence : </label>
+
+            <div class="row justify-content-center mt-3">
+                <div class="btn-group w-auto" role="group" >
+                    <input type="radio" class="btn-check" name="motif" id="absent" value="Absent" autocomplete="off" checked>
+                    <label class="btn btn-outline-dark" for="absent">Absent</label>
+
+                    <input type="radio" class="btn-check" name="motif" id="blesse" value="Blessé" autocomplete="off">
+                    <label class="btn btn-outline-dark" for="blesse">Blessé</label>
+
+                    <input type="radio" class="btn-check" name="motif" id="nonlicencie" value="Non licencié" autocomplete="off">
+                    <label class="btn btn-outline-dark" for="nonlicencie">Non licencié</label>
+
+                    <input type="radio" class="btn-check" name="motif" id="suspendu" value="Suspendu" autocomplete="off">
+                    <label class="btn btn-outline-dark" for="suspendu">Suspendu</label>
                 </div>
             </div>
 
-            <div class="form-group row mt-2">
+            <div class="form-group row mt-3">
                 <label for="dateAbs" class="col-5 col-form-label">Absence Journalière :</label>
                 <div class="col">
                     <input type="date" name="date" id="dateAbs" min="2020-08-01" max="2021-07-31" required class="form-control">
                 </div>
             </div>
-                <!--    <label>Absence Plagiaire :</label>-->
-                <!--    <input type="date" name="dateabsence" id="dateAbsDeb">-->
-                <!--    <input type="date" name="dateabsence" id="dateAbsFin">-->
-                <!--    <br>-->
-            <div class="form-group row justify-content-center mt-2">
+
+            <div class="form-group row justify-content-center mt-3">
                 <button type="submit" class="btn btn-primary col-5">Confirmer l'absence</button>
             </div>
         </form>
     </div>
 </div>
 
-
-{############# RESTRICTION DES DATES #############}
-<script>
-    // var today = new Date().toISOString().split('T')[0];
-    // document.querySelector('input[type=date]').setAttribute('min', today);
-
-    var date = document.querySelector('input[type=date]');
-    function weekEnd(e) {
-        var jour = new Date(e.target.value).getUTCDay();
-        if(jour == 0){
-            e.target.setCustomValidity('');
-        } else {
-            e.target.setCustomValidity('Veuillez choisir une date valide (Dimanche)');
-        }
-    }
-    date.addEventListener('change',weekEnd);
-</script>
-
+<script src="JS/dateDimanche.js"></script>
 {% endblock %}
 

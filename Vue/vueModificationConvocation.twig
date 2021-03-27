@@ -5,47 +5,71 @@
 {% endblock %}
 
 {% block title %}
-    Convocations sportives - Modification d'une Convocation
+    Convocations sportives - Modification d'une convocation
 {% endblock %}
 
 {% block contenu %}
 
-
-{############# MODIFICATION DE CONVOCATION #############}
-
 <div class="row pt-5">
-    <h1>Modifier une Convocation</h1>
+    <h1 class="mb-3">Modifier une convocation</h1>
     <form method="post" action="index.php?action=modifierConvocation">
         <div class="form-group row mb-3">
             <label for="convocationMatch" class="col-1 col-form-label">Match : </label>
             <div class="col-7">
                 <select name="numMatch" id="convocationMatch" class="form-select">
-                    {% for match in matchs %}
-                        <option value="{{ match['NumMatch'] }}" {% if convocation['NumMatch'] == match['NumMatch'] %} selected {% endif %}>{{ match['Competition'] }} - {{ match['Equipe'] }} le {{ match['Date']|date("d/m/Y") }}</option>
+                    <option value="{{ matchConvoc['NumMatch'] }}" selected>{{ matchConvoc['Equipe'] }} (le {{ matchConvoc['Date']|date("d/m/Y") }}) - {{ matchConvoc['Competition'] }}  à {{ matchConvoc['Site'] }}</option>
+                    {% for match in matchsConvocables %}
+                        <option value="{{ match['NumMatch'] }}">{{ match['Equipe'] }} ({{ match['Date']|date("d/m/Y") }}) - {{ match['Competition'] }} à {{ match['Site'] }}</option>
                     {% endfor %}
                 </select>
             </div>
         </div>
 
-        {% for i in 1..14 %}
-            <div class="form-group row">
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend col-1">
-                        <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
-                    </div>
-                    <div class="col-4">
-                        <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" {% if i <= 11 %} required {% endif %} >
-                            <option value="">choix</option>
-                            {% for joueur in joueurs %}
-                                <option value="{{ joueur['IdJoueur'] }}" {% if joueursConvoques[i-1]['IdJoueur'] == joueur['IdJoueur'] %} selected {% endif %}>{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+        <div id="joueursConvoques">
+            <div class="row">
+                <div class="col-6">
+                    {% for i in 1..7 %}
+                        <div class="form-group row">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend col-2">
+                                    <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
+                                </div>
+                                <div class="col">
+                                    <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" >
+                                        <option value="" >choix</option>
+                                        {% for joueur in joueursConvocables %}
+                                            <option value="{{ joueur['IdJoueur'] }}" {% if joueursConvoques[i-1]['IdJoueur'] == joueur['IdJoueur'] %} selected {% endif %}>{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-6">
+                    {% for i in 8..14 %}
+                        <div class="form-group row">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend col-2">
+                                    <label for="convocationJoueur{{ i }}" class="input-group-text">Joueur {{ i }} </label>
+                                </div>
+                                <div class="col">
+                                    <select name="idJoueur{{ i }}" id="convocationJoueur{{ i }}" class="form-select" >
+                                        <option value="" >choix</option>
+                                        {% for joueur in joueursConvocables %}
+                                            <option value="{{ joueur['IdJoueur'] }}" {% if joueursConvoques[i-1]['IdJoueur'] == joueur['IdJoueur'] %} selected {% endif %}>{{ joueur['Prenom'] }} {{ joueur['Nom'] }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
-        {% endfor %}
+        </div>
+
         <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
-        <button type="submit" class="btn btn-primary col-2 mt-2">Confirmer</button>
+        <button type="submit" class="btn btn-primary col-2 mt-3">Confirmer</button>
     </form>
 </div>
 <div class="row my-2">
@@ -53,4 +77,73 @@
         <button type="submit" class="btn btn-danger">Annuler la modification</button>
     </form>
 </div>
+
+<div class="row pt-5">
+    <div class="col-5">
+        <h1 class="mb-3">Joueurs <span class="text-success">convocables</span></h1>
+        <div class="row">
+            <table class="table border table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Licence</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for joueur in joueursConvocables %}
+                    <tr>
+                        <td>{{ joueur['Prenom'] }}</td>
+                        <td>{{ joueur['Nom'] }}</td>
+                        <td>{{ joueur['Categorie'] }}</td>
+                        <td>{{ joueur['Licence'] }}</td>
+
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun joueur ne peut être convoqué</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="offset-1 col-6">
+        <h1 class="mb-3">Joueurs <span class="text-danger">non convocables</span></h1>
+        <div class="row">
+            <table class="table border table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Licence</th>
+                    <th>Motif</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for joueur in joueursNonConvocables %}
+                    <tr>
+                        <td>{{ joueur['Prenom'] }}</td>
+                        <td>{{ joueur['Nom'] }}</td>
+                        <td>{{ joueur['Categorie'] }}</td>
+                        <td>{{ joueur['Licence'] }}</td>
+                        <td>{{ joueur['Motif'] }}</td>
+
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Tous les joueurs peuvent être convoqués</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="JS/selectionJoueurs.js"></script>
+
 {% endblock %}

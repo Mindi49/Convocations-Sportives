@@ -5,15 +5,12 @@
 {% endblock %}
 
 {% block title %}
-    Convocations sportives - Modification d'un Match
+    Convocations sportives - Modification d'un match
 {% endblock %}
 
 {% block contenu %}
-
-{############# MODIFICATION DE MATCH #############}
-
 <div class="row pt-5">
-    <h1>Modifier un Match</h1>
+    <h1>Modifier un match</h1>
     <form method="post" action="index.php?action=modifierMatch">
         <div class="form-group row pt-2">
             <label for="categorieMatch" class="col-3 col-form-label">Catégorie : </label>
@@ -36,7 +33,7 @@
             </div>
         </div>
         <div class="form-group row pt-2">
-            <label for="equipeMatch" class="col-3 col-form-label">Equipe : </label>
+            <label for="equipeMatch" class="col-3 col-form-label">Équipe : </label>
             <div class="col-6">
                 <select name="equipe" id="equipeMatch" class="form-select">
                     {% for equipe in equipes %}
@@ -47,7 +44,7 @@
         </div>
 
         <div class="form-group row pt-2">
-            <label for="equipeAdvMatch" class="col-3 col-form-label">Equipe adverse : </label>
+            <label for="equipeAdvMatch" class="col-3 col-form-label">Équipe adverse : </label>
             <div class="col-6">
                 <input type="text" name="equipeadv" id="equipeAdvMatch" class="form-control" value="{{ match['EquipeAdverse'] }}">
             </div>
@@ -90,4 +87,7 @@
         <button type="submit" class="btn btn-danger">Annuler la modification</button>
     </form>
 </div>
+
+<script src="JS/dateDimanche.js"></script>
+
 {% endblock %}

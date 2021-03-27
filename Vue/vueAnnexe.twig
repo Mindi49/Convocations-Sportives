@@ -1,0 +1,145 @@
+{% extends "gabarit.twig" %}
+
+{% block isAnnexe %}
+    active
+{% endblock %}
+
+{% block title %}
+    Convocations sportives - Annexe
+{% endblock %}
+
+
+{% block contenu %}
+<div class="row pt-2 pb-5">
+    <div class="alert alert-info alert-dismissible fade show mt-5" role="alert">
+        <strong>Information :</strong> <br>
+        Cette page n'est qu'une annexe et ne fait donc pas pleinement partie du site. <br>
+        Elle a pour but de tester les différentes fonctionnalités et ne serait utile que dans le cas où l'on souhaiterait :
+        <ul>
+            <li> Ajouter/supprimer des Catégories </li>
+            <li> Ajouter/supprimer des Équipes </li>
+            <li> Ajouter/supprimer des Compétitions </li>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="col-6">
+        <h1>Catégories</h1>
+        <table class="table border table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th class="text-center">Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for categorie in categories %}
+                <tr>
+                    <td>{{ categorie['Nom'] }}</td>
+                    <td class="text-center"><form method="post" action="index.php?action=supprimerCategorie">
+                            <input type="hidden" name="nom" value="{{ categorie['Nom'] }}" />
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        </form></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="offset-1 col-5">
+        <h1>Ajouter une catégorie</h1>
+        <form method="post" action="index.php?action=ajouterCategorie">
+            <div class="form-group row">
+                <label for="nomCategorie" class="col-3 form-label">Catégorie : </label>
+                <div class="col">
+                    <input type="text" name="nom" id="nomCategorie" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group row mt-2 justify-content-center">
+                <button type="submit" class="btn btn-primary col-5">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="row pt-5">
+    <div class="col-6">
+        <h1>Équipes</h1>
+        <table class="table border table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th class="text-center">Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for equipe in equipes %}
+                <tr>
+                    <td>{{ equipe['Nom'] }}</td>
+                    <td class="text-center"><form method="post" action="index.php?action=supprimerEquipe">
+                            <input type="hidden" name="nom" value="{{ equipe['Nom'] }}" />
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                        </form></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="offset-1 col-5">
+        <h1>Ajouter une équipe</h1>
+        <form method="post" action="index.php?action=ajouterEquipe">
+            <div class="form-group row">
+                <label for="nomEquipe" class="col-3 form-label">Equipe : </label>
+                <div class="col">
+                    <input type="text" name="nom" id="nomEquipe" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group row mt-2 justify-content-center">
+                <button type="submit" class="btn btn-primary col-5">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="row pt-5">
+    <div class="col-6">
+        <h1>Compétitions</h1>
+        <table class="table border table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th class="text-center">Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for competition in competitions %}
+                    <tr>
+                        <td>{{ competition['Nom'] }}</td>
+                        <td class="text-center"><form method="post" action="index.php?action=supprimerCompetition">
+                                <input type="hidden" name="nom" value="{{ competition['Nom'] }}" />
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                            </form></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="offset-1 col-5">
+        <h1>Ajouter une compétition</h1>
+        <form method="post" action="index.php?action=ajouterCompetition">
+            <div class="form-group form-inline row">
+                <label for="nomCompetition" class="col-3 form-label">Compétition : </label>
+                <div class="col">
+                    <input type="text" name="nom" id="nomCompetition" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group row mt-2 justify-content-center">
+                <button type="submit" class="btn btn-primary col-5 ">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

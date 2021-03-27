@@ -6,157 +6,166 @@
 
 
 {% block title %}
-    Convocations sportives - Informations sur un Match
+    Convocations sportives - Informations sur un match
 {% endblock %}
 
 {% block contenu %}
 
+{% if role == 'S' %}
+    <div class="row pt-5">
+        <div class="alert alert-info alert-dismissible fade show mb-3" role="alert">
+            <strong>Information : </strong>Pour insérer correctement des joueurs lors d'un import CSV, veuillez utiliser le format ci-contre : <br><br>
+            <div style="text-align: center;font-weight: bold" >Catégorie, Compétition, Équipe, ÉquipeAdverse, Date, Heure, Terrain, Site</div><br>
+            Avec le date au format <strong>Y-m-d</strong> ainsi que l'heure au format <strong>h:i</strong>.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="col-7">
+            <h1 class="mb-3">Programmer un match</h1>
+            <form method="post" action="index.php?action=ajouterMatch">
+                <div class="form-group row">
+                    <label for="categorieMatch" class="col-4 col-form-label">Catégorie : </label>
+                    <div class="col">
+                        <select name="categorie" id="categorieMatch" class="form-select">
+                            {% for categorie in categories %}
+                                <option value="{{ categorie['Nom'] }}">{{ categorie['Nom'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row pt-2">
+                    <label for="competitionMatch" class="col-4 col-form-label">Compétition : </label>
+                    <div class="col">
+                        <select name="competition" id="competitionMatch" class="form-select">
+                            {% for competition in competitions %}
+                                <option value="{{ competition['Nom'] }}">{{ competition['Nom'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row pt-2">
+                    <label for="equipeMatch" class="col-4 col-form-label">Équipe : </label>
+                    <div class="col">
+                        <select name="equipe" id="equipeMatch" class="form-select">
+                            {% for equipe in equipes %}
+                                <option value="{{ equipe['Nom'] }}">{{ equipe['Nom'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
 
-{############# MATCH #############}
+                <div class="form-group row pt-2">
+                    <label for="equipeAdvMatch" class="col-4 col-form-label">Équipe adverse : </label>
+                    <div class="col">
+                        <input type="text" name="equipeadv" id="equipeAdvMatch" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row pt-2">
+                    <label for="dateCompetition" class="col-4 col-form-label">Date de la compétition : </label>
+                    <div class="col">
+                        <input type="date" name="date" id="dateCompetition" min="2020-08-01" max="2021-07-31" class="form-control" required>
+                    </div>
+                </div>
 
-<div class="row pt-5">
-    <div class="col">
-        <h1>Matchs Programmés</h1>
-        <table class="table border table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>Categorie</th>
-                    <th>Competition</th>
-                    <th>Equipe</th>
-                    <th>Equipe adverse</th>
-                    <th>Date</th>
-                    <th>Heure</th>
-                    <th>Terrain</th>
-                    <th>Site</th>
-                    {% if role == 'S' %}
-                    <th>Modifier</th>
-                    <th>Supprimer</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody style="font-size: 12pt">
-            {% for match in matchs %}
-                <tr>
-                    <td>{{ match['Categorie'] }}</td>
-                    <td>{{ match['Competition'] }}</td>
-                    <td>{{ match['Equipe'] }}</td>
-                    <td>{{ match['EquipeAdverse'] }}</td>
-                    <td>{{ match['Date']|date("d/m/Y") }}</td>
-                    <td>{{ match['Heure'] }}</td>
-                    <td>{{ match['Terrain'] }}</td>
-                    <td>{{ match['Site'] }}</td>
-                    {% if role == 'S' %}
-                    <td><form method="post" action="index.php?action=accesModifierMatch&num={{ match['NumMatch'] }}">
-                            <button type="submit" class="btn btn-outline-dark border-0"><i class="fa fa-pen"></i></button>
-                        </form></td>
-                    <td><form method="post" action="index.php?action=supprimerMatch">
-                            <input type="hidden" name="num" value="{{ match['NumMatch'] }}" />
-                            <button type="submit" class="btn btn-danger border-0"><i class="fa fa-times"></i></button>
-                        </form></td>
-                    {% endif %}
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5" class="text-center">Aucun match programmé</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                <div class="form-group row pt-2">
+                    <label for="heureCompetition" class="col-4 col-form-label">Heure de la compétition : </label>
+                    <div class="col">
+                        <input type="time" name="heure" id="heureCompetition" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group row pt-2">
+                    <label for="terrain" class="col-4 col-form-label">Terrain : </label>
+                    <div class="col">
+                        <input type="text" id="terrain" name="terrain" size="12" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row pt-2">
+                    <label for="site" class="col-4 col-form-label">Site : </label>
+                    <div class="col">
+                        <input type="text" id="site" name="site" size="12" class="form-control">
+                    </div>
+                </div>
+
+
+                <div class="form-group row justify-content-center pt-3">
+                    <button type="submit" class="btn btn-primary col-5">Ajouter</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="offset-1 col-4">
+            <h1 class="mb-3">Importer un match</h1>
+            <form method="post" action="index.php?action=importerMatch" enctype="multipart/form-data">
+                <label for="fichier" class="form-label">Choisir un fichier :</label>
+                <input type="file" id="fichier" name="fichier" class="form-control" accept="text/csv"><br><br>
+                <div class="form-group row justify-content-center">
+                    <button type="submit" class="btn btn-primary col-5">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+    <div class="row pt-5">
+        <h1 class="mb-3">Matchs programmés</h1>
+        <div id="alerteSuppressionMatch" class="collapse">
+            <div class="my-2 alert alert-warning">
+                <span id="messageSuppressionMatch"></span>
+                <div class="float-end"> <button id="fermetureMessageSuppressionMatch" type="button" class="btn-close"></button></div>
+            </div>
+        </div>
     </div>
 </div>
 
-{% if role == 'S' %}
-<div class="row pt-5">
-    <h1>Programmer un Match</h1>
-    <form method="post" action="index.php?action=ajouterMatch">
-        <div class="form-group row">
-            <label for="categorieMatch" class="col-3 col-form-label">Catégorie : </label>
-            <div class="col-6">
-                <select name="categorie" id="categorieMatch" class="form-select">
-                    {% for categorie in categories %}
-                        <option value="{{ categorie['Nom'] }}">{{ categorie['Nom'] }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div class="form-group row pt-2">
-            <label for="competitionMatch" class="col-3 col-form-label">Compétition : </label>
-            <div class="col-6">
-                <select name="competition" id="competitionMatch" class="form-select">
-                    {% for competition in competitions %}
-                        <option value="{{ competition['Nom'] }}">{{ competition['Nom'] }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div class="form-group row pt-2">
-            <label for="equipeMatch" class="col-3 col-form-label">Equipe : </label>
-            <div class="col-6">
-                <select name="equipe" id="equipeMatch" class="form-select">
-                    {% for equipe in equipes %}
-                        <option value="{{ equipe['Nom'] }}">{{ equipe['Nom'] }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group row pt-2">
-            <label for="equipeAdvMatch" class="col-3 col-form-label">Equipe adverse : </label>
-            <div class="col-6">
-                <input type="text" name="equipeadv" id="equipeAdvMatch" class="form-control">
-            </div>
-        </div>
-        <div class="form-group row pt-2">
-            <label for="dateCompetition" class="col-3 col-form-label">Date de la compétition : </label>
-            <div class="col-6">
-                <input type="date" name="date" id="dateCompetition" min="2020-08-01" max="2021-07-31" class="form-control" required>
-            </div>
-        </div>
-
-        <div class="form-group row pt-2">
-            <label for="heureCompetition" class="col-3 col-form-label">Heure de la compétition : </label>
-            <div class="col-6">
-                <input type="time" name="heure" id="heureCompetition" class="form-control" required>
-            </div>
-        </div>
-
-        <div class="form-group row pt-2">
-            <label for="terrain" class="col-3 col-form-label">Terrain : </label>
-            <div class="col-6">
-                <input type="text" id="terrain" name="terrain" size="12" class="form-control">
-            </div>
-        </div>
-
-        <div class="form-group row pt-2">
-            <label for="site" class="col-3 col-form-label">Site : </label>
-            <div class="col-6">
-                <input type="text" id="site" name="site" size="12" class="form-control">
-            </div>
-        </div>
-
-
-        <div class="form-group row justify-content-center pt-2">
-            <button type="submit" class="btn btn-primary col-5">Ajouter</button>
-        </div>
-    </form>
+<div class="container-fluid px-5">
+    <table class="table border table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Catégorie</th>
+                <th>Compétition</th>
+                <th>Équipe</th>
+                <th>Équipe adverse</th>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Terrain</th>
+                <th>Site</th>
+                {% if role == 'S' %}
+                <th class="text-center">Modifier</th>
+                <th class="text-center">Supprimer</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody style="font-size: 12pt">
+        {% for match in matchs %}
+            <tr>
+                <td>{{ match['Categorie'] }}</td>
+                <td>{{ match['Competition'] }}</td>
+                <td>{{ match['Equipe'] }}</td>
+                <td>{{ match['EquipeAdverse'] }}</td>
+                <td>{{ match['Date']|date("d/m/Y") }}</td>
+                <td>{{ match['Heure'] }}</td>
+                <td>{{ match['Terrain'] }}</td>
+                <td>{{ match['Site'] }}</td>
+                {% if role == 'S' %}
+                <td class="text-center"><form method="post" action="index.php?action=accesModifierMatch&num={{ match['NumMatch'] }}">
+                        <button type="submit" class="btn btn-outline-dark border-0"><i class="fa fa-pen"></i></button>
+                    </form></td>
+                <td class="text-center">
+                    <button type="submit" onclick="supprimerMatch({{ match['NumMatch'] }}, this)" class="btn btn-outline-danger border-0"><i class="fa fa-trash-alt"></i></button>
+                </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" class="text-center">Aucun match programmé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
-{% endif %}
 
-<script>
-    // var today = new Date().toISOString().split('T')[0];
-    // document.querySelector('input[type=date]').setAttribute('min', today);
-
-    var date = document.querySelector('input[type=date]');
-    function weekEnd(e) {
-        var jour = new Date(e.target.value).getUTCDay();
-        if(jour == 0){
-            e.target.setCustomValidity('');
-
-        } else {
-            e.target.setCustomValidity('Veuillez choisir une date valide (Dimanche)');
-        }
-    }
-    date.addEventListener('change',weekEnd);
-</script>
+<script src="JS/dateDimanche.js"></script>
+<script src="JS/suppressionMatch.js"></script>
 
 {% endblock %}

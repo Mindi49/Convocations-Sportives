@@ -6,17 +6,14 @@
 
 
 {% block title %}
-    Convocations sportives - Informations sur une Convocation
+    Convocations sportives - Informations sur une vonvocation
 {% endblock %}
 
 {% block contenu %}
 
-
-{############# INFORMATIONS CONVOCATIONS #############}
-
 <div class="row pt-5">
     <div class="col-6">
-        <h1>Convocation pour le match : </h1>
+        <h1 class="mb-3">Convocation pour le match : </h1>
         <table class="table table-bordered table-light">
             <tbody>
                 <tr>
@@ -24,7 +21,7 @@
                     <td>{{ convocation['Categorie'] }}</td>
                 </tr>
                 <tr>
-                    <th>Competition</th>
+                    <th>Compétition</th>
                     <td>{{ convocation['Competition'] }}</td>
                 </tr>
 
@@ -57,13 +54,13 @@
     </div>
 
     <div class="offset-1 col-5">
-        <h1>Joueurs convoqués</h1>
+        <h1 class="mb-3">Joueurs convoqués</h1>
         <div class="row">
             <table class="table border table-striped table-hover">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Prenom</th>
+                    <th>Prénom</th>
                     <th>Nom</th>
                 </tr>
                 </thead>
@@ -74,14 +71,15 @@
                         <td>{{ joueurConvoque['Prenom'] }}</td>
                         <td>{{ joueurConvoque['Nom'] }}</td>
                     </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun joueur n'a été convoqué</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-
-
 
 {% endblock %}

@@ -1,14 +1,12 @@
 <?php
 
 class Session {
-    /** Démarre ou restaure la session  */
     public function __construct() {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    /**  Détruit la session actuelle   */
     public function detruire() {
         session_destroy();
     }
@@ -33,17 +31,14 @@ class Session {
         else return 'V';
     }
 
-    /** Ajoute un attribut à la session   */
     public function setAttribut($nom, $valeur) {
         $_SESSION[$nom] = $valeur;
     }
 
-    /** Renvoie vrai si l'attribut existe dans la session    */
     public function existeAttribut($nom) {
         return (isset($_SESSION[$nom]) && $_SESSION[$nom] != "");
     }
 
-    /** Renvoie la valeur de l'attribut demandé   */
     public function getAttribut($nom) {
         if ($this->existeAttribut($nom)) {
             return $_SESSION[$nom];

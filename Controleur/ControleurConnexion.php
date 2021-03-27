@@ -26,8 +26,8 @@ class ControleurConnexion extends ControleurSession {
     public function connexion ($nomUtilisateur,$mdp) {
         try {
             $utilisateur = $this->utilisateur->getUtilisateur($nomUtilisateur,$mdp);
-            $this->session->setAttribut("nomUtilisateur",$nomUtilisateur);
-            $this->session->setAttribut("role",$utilisateur['Role']);
+            $this->session->setAttribut("nomUtilisateur", $nomUtilisateur);
+            $this->session->setAttribut("role", $utilisateur['Role']);
             header("Location:index.php?action=menuCompte");
         } catch (Exception $e) {
             $erreurs = $e->getMessage();
