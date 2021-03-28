@@ -7,12 +7,19 @@ require_once 'Modele/Convocation.php';
 require_once 'ControleurSession.php';
 require_once 'Vue/Vue.php';
 
+/**
+ * Contrôleur des actions liées à la page d'accueil, accessible de tous.
+ */
 class ControleurAccueil extends ControleurSession {
+    /** Les modèles fournissant les différents services d'accès */
     private $competition;
     private $equipe;
     private $categorie;
     private $convocation;
 
+    /**
+     * Constructeur qui instancie les modèles.
+     */
     public function __construct() {
         parent::__construct();
         $this->competition = new Competition();
@@ -21,6 +28,10 @@ class ControleurAccueil extends ControleurSession {
         $this->categorie = new Categorie();
     }
 
+    /**
+     * Récupère les données nécessaires à l'affichage de la vue.
+     * Affiche la vue de la page d'accueil du site.
+     */
     public function accueil() {
         $competitions = $this->competition->getCompetitions();
         $equipes = $this->equipe->getEquipes();

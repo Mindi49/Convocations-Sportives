@@ -8,8 +8,13 @@ require_once 'Controleur/ControleurConnexion.php';
 require_once 'Controleur/ControleurAnnexe.php';
 require_once 'Vue/Vue.php';
 
+/**
+ * Gère le routage des requêtes entrantes.
+ */
 class Routeur {
-
+    /**
+     * Les contrôleurs liés aux différentes pages.
+     */
     private $ctrlAccueil;
     private $ctrlMenuCompte;
     private $ctrlConvocation;
@@ -18,6 +23,9 @@ class Routeur {
     private $ctrlConnexion;
     private $ctrlAnnexe;
 
+    /**
+     * Constructeur qui initialise les contructeurs.
+     */
     public function __construct() {
         $this->ctrlAccueil = new ControleurAccueil();
         $this->ctrlMenuCompte = new ControleurMenuCompte();
@@ -28,11 +36,14 @@ class Routeur {
         $this->ctrlAnnexe = new ControleurAnnexe();
     }
 
+    /**
+     * Méthode principale qui examine la requête et execute l'action appropriée.
+     */
     public function routerRequete() {
         try {
             if (isset($_GET['action'])) {
                 switch ($_GET['action']) {
-                    // Pages d'accueil
+                    // Pages principales
                     case 'menuCompte' :
                         $this->ctrlMenuCompte->menuCompte();
                         break;
@@ -60,7 +71,7 @@ class Routeur {
                         $this->ctrlAnnexe->annexe();
                         break;
 
-                    // JOUEUR - Menu Compte
+                    // Menu compte - Ajout, suppression de joueurs du club
                     case 'supprimerJoueur' :
                         $idJoueur = $this->getParametre($_POST, 'idJoueur');
                         $this->ctrlMenuCompte->supprimerJoueur($idJoueur);
@@ -73,7 +84,7 @@ class Routeur {
                         $this->ctrlMenuCompte->ajouterJoueur($nom, $prenom, $categorie, $licence);
                         break;
 
-                    // CATEGORIE - Annexe
+                    // Catégorie - Annexe
                     case 'supprimerCategorie' :
                         $nom = $this->getParametre($_POST, 'nom');
                         $this->ctrlAnnexe->supprimerCategorie($nom);
@@ -83,7 +94,7 @@ class Routeur {
                         $this->ctrlAnnexe->ajouterCategorie($nom);
                         break;
 
-                    // COMPETITION - Annexe
+                    // Compétition - Annexe
                     case 'supprimerCompetition' :
                         $nom = $this->getParametre($_POST, 'nom');
                         $this->ctrlAnnexe->supprimerCompetition($nom);
@@ -93,7 +104,7 @@ class Routeur {
                         $this->ctrlAnnexe->ajouterCompetition($nom);
                         break;
 
-                    // EQUIPE - Annexe
+                    // Équipe - Annexe
                     case 'supprimerEquipe' :
                         $nom = $this->getParametre($_POST, 'nom');
                         $this->ctrlAnnexe->supprimerEquipe($nom);
@@ -103,7 +114,7 @@ class Routeur {
                         $this->ctrlAnnexe->ajouterEquipe($nom);
                         break;
 
-                    // MATCH - Match
+                    // Match - Ajout, modification, suppression de matchs
                     case 'supprimerMatch' :
                         $numMatch = $this->getParametre($_POST, 'num');
                         $this->ctrlMatch->supprimerMatch($numMatch);
@@ -140,7 +151,7 @@ class Routeur {
                         $this->ctrlMatch->accesModifierMatch($numMatch);
                         break;
 
-                    // ABSENCE - Absence
+                    // Absence - Ajout, suppression d'absences
                     case 'supprimerAbsence' :
                         $idJoueur = $this->getParametre($_POST, 'idJoueur');
                         $date = date('Y-m-d', strtotime($this->getParametre($_POST, 'date')));
@@ -153,7 +164,7 @@ class Routeur {
                         $this->ctrlAbsence->ajouterAbsence($idJoueur, $date, $motif);
                         break;
 
-                    // CONVOCATION - Convocation
+                    // Convocation - Accès, ajout, modification, suppression, publication de convocations.
                     case 'supprimerConvocation' :
                         $numConvocation = $this->getParametre($_POST, 'num');
                         $this->ctrlConvocation->supprimerConvocation($numConvocation);
@@ -196,6 +207,7 @@ class Routeur {
                         $numConvocation = $this->getParametre($_POST, 'num');
                         $this->ctrlConvocation->depublier($numConvocation);
                         break;
+
                     default:
                         throw new Exception("Action non valide");
                 }
@@ -209,13 +221,28 @@ class Routeur {
         }
     }
 
-    // Affiche une erreur
+    /**
+     * Instancie et affiche la vue d'erreur.
+     *
+     * @param $msgErreur    Le message d'erreur.
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     private function erreur($msgErreur) {
         $vue = new Vue("Erreur");
         $vue->generer(array('msgErreur' => $msgErreur));
     }
 
-    // Recherche un paramètre dans un tableau
+    /**
+     * Vérifie si un élément est un paramètre du tableau, si oui retourne
+     * cet élément, sinon lance une erreur.
+     *
+     * @param $tableau      Le tableau dont on vérifie la présence d'un paramètre.
+     * @param $nom          Le paramètre en question.
+     * @return mixed        L'élément du tableau.
+     * @throws Exception    Exception lancée si le paramètre n'est pas présent.
+     */
     private function getParametre($tableau, $nom) {
         if (isset($tableau[$nom])) {
             return $tableau[$nom];

@@ -7,12 +7,19 @@ require_once 'Modele/Competition.php';
 require_once 'ControleurSession.php';
 require_once 'Vue/Vue.php';
 
+/**
+ * Contrôleur des actions liées à la page des matchs.
+ */
 class ControleurMatch extends ControleurSession {
+    /** Les modèles fournissant les différents services d'accès */
     private $match;
     private $categorie;
     private $competition;
     private $equipe;
 
+    /**
+     * Constructeur qui instancie les modèles.
+     */
     public function __construct() {
         parent::__construct();
         $this->match = new Match();
@@ -21,6 +28,12 @@ class ControleurMatch extends ControleurSession {
         $this->equipe = new Equipe();
     }
 
+    /**
+     * Récupère les données nécessaires à l'affichage de la vue.
+     * Affiche la vue de la page des matchs.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     */
     public function match() {
         if (!$this->session->estConnecte()) {
             header("Location:index.php?action=afficherConnexion");
@@ -34,6 +47,14 @@ class ControleurMatch extends ControleurSession {
         $vue->generer(array('matchs' => $matchs, 'categories' => $categories, 'competitions' => $competitions, 'equipes' => $equipes, 'role' => $this->session->getRole()));
     }
 
+    /**
+     * Supprime un match.
+     *
+     * Si l'utilisateur n'est pas connecté en tant que secrétaire.
+     * redirige vers la page de connexion ou celle des matchs.
+     *
+     * @param $numMatch L'identifiant du match à supprimer.
+     */
     public function supprimerMatch($numMatch) {
         if ($this->session->estSecretaire()) {
             $this->match->supprimerMatch($numMatch);
@@ -43,9 +64,25 @@ class ControleurMatch extends ControleurSession {
         }
     }
 
-    public function ajouterMatch($categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site) {
+    /**
+     * Ajoute un match
+     *
+     * Si l'utilisateur n'est pas connecté en tant que secrétaire.
+     * redirige vers la page de connexion ou celle des matchs.
+     *
+     * @param $categorie    Le nom de la catégorie.
+     * @param $competition  Le nom du type de compétition organisée.
+     * @param $equipe       Le nom de l'équipe.
+     * @param $equipeadv    Le nom de l'équipe adverse.
+     * @param $date         La date du match.
+     * @param $heure        L'heure de match.
+     * @param $terrain      Le nom du terrain sur lequel se déroulera le match.
+     * @param $site         Le nom du lieu / ville où se passera la rencontre.
+     * @throws Exception    Exception lancée si le match est déjà répertorié.
+     */
+    public function ajouterMatch($categorie, $competition, $equipe, $equipeadv, $date, $heure, $terrain, $site) {
         if ($this->session->estSecretaire()) {
-            $this->match->ajouterMatch($categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site);
+            $this->match->ajouterMatch($categorie, $competition, $equipe, $equipeadv, $date, $heure, $terrain, $site);
             header("Location:index.php?action=match");
         }
         else if ($this->session->estEntraineur()) {
@@ -56,6 +93,16 @@ class ControleurMatch extends ControleurSession {
         }
     }
 
+    /**
+     * Affiche la page de modification d'un match.
+     * Récupère les données nécessaires à l'affichage de la vue.
+     * Affiche la vue de la page de modification de matchs.
+     *
+     * Si l'utilisateur n'est pas connecté en tant que secrétaire.
+     * redirige vers la page de connexion ou celle des matchs.
+     *
+     * @param $numMatch
+     */
     public function accesModifierMatch($numMatch) {
         if ($this->session->estSecretaire()) {
             $match = $this->match->getMatch($numMatch);
@@ -73,6 +120,22 @@ class ControleurMatch extends ControleurSession {
         }
     }
 
+    /**
+     * Modifie un match.
+     *
+     * Si l'utilisateur n'est pas connecté en tant que secrétaire.
+     * redirige vers la page de connexion ou celle des matchs.
+     *
+     * @param $numMatch     L'identifiant du match que l'on modifie.
+     * @param $categorie    Le nom de la catégorie.
+     * @param $competition  Le nom du type de compétition organisée.
+     * @param $equipe       Le nom de l'équipe.
+     * @param $equipeadv    Le nom de l'équipe adverse.
+     * @param $date         La date du match.
+     * @param $heure        L'heure de match.
+     * @param $terrain      Le nom du terrain sur lequel se déroulera le match.
+     * @param $site         Le nom du lieu / ville où se passera la rencontre.
+     */
     public function modifierMatch($numMatch, $categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site) {
         if ($this->session->estSecretaire()) {
             $this->match->modifierMatch($numMatch, $categorie, $competition, $idEquipe, $equipeadv, $date, $heure, $terrain, $site);
@@ -87,6 +150,15 @@ class ControleurMatch extends ControleurSession {
 
     }
 
+    /**
+     * Importe un fichier CSV, traite les données associées pour créer les matchs correspondants.
+     *
+     * Si l'utilisateur n'est pas connecté en tant que secrétaire.
+     * redirige vers la page de connexion ou celle des matchs.
+     *
+     * @param $fichier      Le fichier CSV importé.
+     * @throws Exception    Exception lancée lors d'une erreur dans la forme ou la lecture du fichier.
+     */
     public function importerMatch($fichier) {
         if ($this->session->estSecretaire()) {
             $matchsImportes = array();

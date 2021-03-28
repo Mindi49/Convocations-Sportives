@@ -6,11 +6,18 @@ require_once 'Modele/Categorie.php';
 require_once 'ControleurSession.php';
 require_once 'Vue/Vue.php';
 
+/**
+ * Contrôleur des actions liées à la page annexe.
+ */
 class ControleurAnnexe extends ControleurSession {
+    /** Les modèles fournissant les différents services d'accès */
     private $categorie;
     private $competition;
     private $equipe;
 
+    /**
+     * Constructeur qui intancie les modèles.
+     */
     public function __construct() {
         parent::__construct();
         $this->categorie = new Categorie();
@@ -18,6 +25,12 @@ class ControleurAnnexe extends ControleurSession {
         $this->equipe = new Equipe();
     }
 
+    /**
+     * Récupère les données nécessaires à l'affichage de la vue.
+     * Affiche la vue de la page annexe.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     */
     public function annexe() {
         if (!$this->session->estConnecte()) {
             header("Location:index.php?action=afficherConnexion");
@@ -30,6 +43,13 @@ class ControleurAnnexe extends ControleurSession {
         $vue->generer(array('categories' => $categories, 'competitions' => $competitions, 'equipes' => $equipes, 'role' => $this->session->getRole()));
     }
 
+    /**
+     * Supprime une catégorie.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     *
+     * @param $nom  Le nom de la catégorie à supprimer.
+     */
     public function supprimerCategorie($nom) {
         if ($this->session->estConnecte()) {
             $this->categorie->supprimerCategorie($nom);
@@ -39,6 +59,14 @@ class ControleurAnnexe extends ControleurSession {
         }
     }
 
+    /**
+     * Ajoute une catégorie.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     *
+     * @param $nom          La catégorie à ajouter.
+     * @throws Exception    Exception lancée si la catégorie est déjà présente.
+     */
     public function ajouterCategorie($nom) {
         if ($this->session->estConnecte()) {
             $this->categorie->ajouterCategorie($nom);
@@ -48,7 +76,13 @@ class ControleurAnnexe extends ControleurSession {
         }
     }
 
-
+    /**
+     * Supprime une compétition.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     *
+     * @param $nom  Le nom de la compétition à supprimer.
+     */
     public function supprimerCompetition($nom) {
         if ($this->session->estConnecte()) {
 
@@ -59,6 +93,14 @@ class ControleurAnnexe extends ControleurSession {
         }
     }
 
+    /**
+     * Ajoute une compétition.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     *
+     * @param $nom          La compétition à ajouter.
+     * @throws Exception    Exception lancée si la compétition est déjà présente.
+     */
     public function ajouterCompetition($nom) {
         if ($this->session->estConnecte()) {
 
@@ -69,7 +111,13 @@ class ControleurAnnexe extends ControleurSession {
         }
     }
 
-
+    /**
+     * Supprime une équipe.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     *
+     * @param $nom  Le nom de l'équipe à supprimer.
+     */
     public function supprimerEquipe($nom) {
         if ($this->session->estConnecte()) {
 
@@ -80,6 +128,14 @@ class ControleurAnnexe extends ControleurSession {
         }
     }
 
+    /**
+     * Ajoute une équipe.
+     *
+     * Si l'utilisateur n'est pas connecté, redirige vers la page de connexion.
+     *
+     * @param $nom          L'équipe à ajouter.
+     * @throws Exception    Exception lancée si la équipe est déjà présente.
+     */
     public function ajouterEquipe($nom) {
         if ($this->session->estConnecte()) {
 
