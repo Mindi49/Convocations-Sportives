@@ -57,11 +57,8 @@ class Match extends Modele {
         } catch (Exception $e) {
             if ($e->getCode() == 22007) {
                 throw new Exception("Format de date invalide.");
-            } else if ($e->getCode() == 23000) {
-                throw new Exception("Un champ est invalide et ne fait pas partie de ceux présents (catégorie, compétition ou équipe).");
-            }
-            else {
-                throw new Exception("Un match pour cette date ($date) et cette équipe ($equipe) existe déjà.");
+            } else {
+                throw new Exception("Un match pour cette date ($date) et cette équipe ($equipe) existe déjà. Ou un champ est invalide et ne fait pas partie de ceux présents (catégorie, compétition ou équipe).");
             }
         }
     }
@@ -101,11 +98,19 @@ class Match extends Modele {
      * @param $site             Le lieu / ville dans où se déroule la rencontre.
      */
     public function modifierMatch($numMatch, $categorie, $competition, $equipe, $equipeadverse, $date, $heure, $terrain, $site) {
-        $sql = 'UPDATE T_MATCH'
+        try {
+            $sql = 'UPDATE T_MATCH'
             . ' SET Categorie = ?, Competition = ?, Equipe = ?,'
             . ' EquipeAdverse = ?, Date = ?, Heure = ?,'
             . ' Terrain = ?, Site = ? '
             . ' WHERE NumMatch = ?';
         $this->executerRequete($sql, array($categorie, $competition, $equipe, $equipeadverse, $date, $heure, $terrain, $site, $numMatch));
+        } catch (Exception $e) {
+            if ($e->getCode() == 22007) {
+                throw new Exception("Format de date invalide.");
+            } else {
+                throw new Exception("Un match pour cette date ($date) et cette équipe ($equipe) existe déjà. Ou un champ est invalide et ne fait pas partie de ceux présents (catégorie, compétition ou équipe).");
+            }
+        }
     }
 }

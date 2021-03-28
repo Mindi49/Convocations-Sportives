@@ -23,4 +23,17 @@ Enter password:
 Enter password:
 ```
 
-- Visiter la [page d'accueil](http://localhost/devweb/PROJET/Convocations-Sportives/index.php)
+## Informations complémentaires
+
+Pour se connecter sur le site en tant que :
+- Secrétaire :
+```
+Nom d'utilisateur	: Aude
+Mot de passe		: audodo
+```
+- Entraîneur :
+```
+Nom d'utilisateur	: Deschamps
+Mot de passe		: didou
+```
+

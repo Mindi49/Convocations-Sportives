@@ -43,7 +43,7 @@
     <div class="row">
         {% if role == 'E' %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Information importante :</strong> Une convocation ne peut être publiée que si au moins 11 joueurs y sont convoqués.
+            <strong>Information importante :</strong> Une convocation ne peut être publiée que si au moins <strong>11 joueurs</strong> y sont convoqués et si elle est <strong>valide</strong>.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endif %}
@@ -54,6 +54,7 @@
             <tr>
                 <th>Convocation</th>
                 <th class="text-center">Nombre de joueurs</th>
+                <th class="text-center">Validité</th>
                 {% if role == 'E' %}
                 <th class="text-center">Modifier</th>
                 <th class="text-center">Publier</th>
@@ -70,7 +71,8 @@
                             <a href="index.php?action=informationsConvocation&num={{ convocation['NumConvoc'] }}" class="btn" role="button" style="text-align: left; width: 100%">
                                 {{ convocation['Equipe'] }} (le {{ convocation['Date']|date("d/m/Y") }}) - {{ convocation['Competition'] }} à {{ convocation['Site'] }}</a>
                         </td>
-                        <td class="text-center">{{ convocation['NbJoueurs'] }}</td>
+                        <td class="text-center {% if convocation['NbJoueurs'] < 11 %} text-danger" data-bs-toggle="tooltip" title="Pas assez de joueurs convoqués." {% else %} text-success" {% endif %}><strong>{{ convocation['NbJoueurs'] }}</strong></td>
+                        <td class="text-center">{% if convocation['valide'] %} <span class="badge bg-success">Valide</span>{% else %}<span class="badge bg-danger" data-bs-toggle="tooltip" title="Des joueurs convoqués sont absents, modifiez la convocations pour valider leur suppression">Invalide</span>{% endif %}</td>
                         {% if role == 'E' %}
                         <td class="text-center">
                             <form method="post" action="index.php?action=accesModifierConvocation&num={{ convocation['NumConvoc'] }}">
@@ -79,7 +81,7 @@
                         </td>
                         <td class="text-center"><form method="post" action="index.php?action={% if convocation['Publie'] %}depublier{% else %}publier{% endif %}">
                                 <input type="hidden" name="num" value="{{ convocation['NumConvoc'] }}" />
-                                <button type="submit" id="publication" {% if convocation['NbJoueurs'] < 11 %} disabled {% endif %} {% if convocation['Publie'] %} class="btn btn-outline-secondary border-0"> <i class="fa fa-eye-slash"></i> {% else %} class="btn btn-outline-primary border-0"><i class="fa fa-eye"></i> {% endif %}</button>
+                                <button type="submit" id="publication" {% if (convocation['NbJoueurs'] < 11 or not convocation['valide']) and not convocation['Publie'] %} disabled {% endif %} {% if convocation['Publie'] %} class="btn btn-outline-secondary border-0"> <i class="fa fa-eye-slash"></i> {% else %} class="btn btn-outline-primary border-0"><i class="fa fa-eye"></i> {% endif %}</button>
                             </form>
                         </td>
                         <td class="text-center">
@@ -89,15 +91,12 @@
                             </form>
                         </td>
                         {% else %}
-                            <td class="text-center">{% if convocation['Publie'] %}<span class="badge bg-success">Publiée</span>
-                            {% elseif convocation['NbJoueurs'] < 11 %}<span class="badge bg-dark">Incomplète</span></td>
-                            {% else %}<span class="badge bg-warning">Complète</span></td>
-                            {% endif %}
+                            <td class="text-center">{% if convocation['Publie'] %}<span class="badge bg-success">Publiée</span>{% endif %}
                         {% endif %}
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="5" class="text-center">Aucun convocation en cours</td>
+                        <td colspan="6" class="text-center">Aucun convocation en cours</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -116,6 +115,7 @@
                 {% if role == 'E' %}
                 <th class="text-center">Dépublier</th>
                 {% endif %}
+                <th>Validité</th>
             </tr>
             </thead>
             {% for convocationPubliee in convocationsPubliees %}
@@ -123,10 +123,14 @@
                     <td><a href="index.php?action=informationsConvocation&num={{ convocationPubliee['NumConvoc'] }}" class="btn" role="button" style="text-align: left; width: 100%">
                             {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date']|date("d/m/Y") }}) - {{ convocationPubliee['Competition'] }} à {{ convocationPubliee['Site'] }}</a></td>
                     {% if role == 'E' %}
-                    <td class="text-center"><form method="post" action="index.php?action=depublier">
+                    <td class="text-center">
+                        <form method="post" action="index.php?action=depublier">
                             <input type="hidden" name="num" value="{{ convocationPubliee['NumConvoc'] }}" />
-                            <button type="submit" class="btn btn-outline-secondary border-0"><i class="fa fa-eye-slash"></i></button></form></td>
+                            <button type="submit" class="btn btn-outline-secondary border-0"><i class="fa fa-eye-slash"></i></button>
+                        </form>
+                    </td>
                     {% endif %}
+                    <td class="justify-content-center">{% if convocationPubliee['valide'] and convocationPubliee['NbJoueurs'] >= 11 %} <span class="badge bg-success">Correcte</span>{% else %}<span class="badge bg-danger" data-bs-toggle="tooltip" title="Des joueurs convoqués sont absents, modifiez la convocations pour valider leur suppression ou le nombre de joueurs n'est plus valide">Incorrecte</span>{% endif %}</td>
                 </tr>
                 {% else %}
                     <tr>

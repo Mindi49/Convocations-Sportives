@@ -38,13 +38,46 @@ class ControleurConvocation extends ControleurSession {
         }
 
         $convocations = $this->convocation->getConvocations();
-        foreach ($convocations as &$c) {
-            $c = array_merge($c, $this->convocation->getNbJoueursConvoques($c['NumConvoc']));
-        }
+        $this->validerConvocations($convocations);
+
         $convocationsPubliees = $this->convocation->getConvocationsPubliees();
+        $this->validerConvocations($convocationsPubliees);
+
         $matchsConvocables = $this->convocation->getMatchsConvocables();
         $vue = new Vue("Convocation");
         $vue->generer(array('convocations' => $convocations, 'convocationsPubliees' => $convocationsPubliees, 'matchsConvocables' => $matchsConvocables, 'role' => $this->session->getRole()));
+    }
+
+    /**
+     * Ajoute l'informations pour un ensemble de convocations de si elles sont valides ou non.
+     * Une convocation est valide si elle ne contient aucun joueur compté comme absent
+     * et si ne contient pas de joueurs déjà convoqués.
+     *
+     * @param $convocations L'ensemble de convocations dont on définit la validité.
+     */
+    public function validerConvocations(&$convocations) {
+        foreach ($convocations as &$c) {
+            $c = array_merge($c, $this->convocation->getNbJoueursConvoques($c['NumConvoc']));
+            $joueursConvoques = $this->convocation->getJoueursConvoques($c['NumConvoc']);
+            $joueursNonConvocables = $this->convocation->getJoueursNonConvocables($c['NumConvoc']);
+
+            $estValide = true;
+            foreach ($joueursConvoques as $j) {
+                if ($this->absence->isAbsent($j['IdJoueur'], $c['Date'])) {
+                    $estValide = false;
+                    break;
+                }
+                else {
+                    $estPresent = !empty(array_filter($joueursNonConvocables, function ($joueur) use ($j) {
+                        return $joueur['IdJoueur'] === $j['IdJoueur'];
+                    }));
+                    if ($estPresent) {
+                        $estValide = false;
+                    }
+                }
+            }
+            $c = array_merge($c, array('valide' => $estValide));
+        }
     }
 
     /**
@@ -64,15 +97,17 @@ class ControleurConvocation extends ControleurSession {
             $matchsConvocables = $this->convocation->getMatchsConvocables();
             $joueursConvocables = $this->convocation->getJoueursConvocables($numConvoc);
             $joueursNonConvocables = $this->convocation->getJoueursNonConvocables($numConvoc);
+
             foreach ($joueursNonConvocables as &$nc) {
                 $abs = $this->absence->isAbsent($nc['IdJoueur'],$matchConvoc['Date']);
                 if ($abs) {
                     $nc = array_merge($nc, $abs);
                 }
                 else {
-                    $nc['Motif'] = "Déjà convoqué";
+                    $nc['Motif'] = 'Déjà convoqué';
                 }
             }
+
             $joueursConvoques = $this->convocation->getJoueursConvoques($numConvoc);
             $vue = new Vue("ModificationConvocation");
             $vue->generer(array('convocation' => $convocation, 'matchsConvocables' => $matchsConvocables, 'joueursConvoques' => $joueursConvoques, 'joueursConvocables' => $joueursConvocables, 'joueursNonConvocables' => $joueursNonConvocables, 'matchConvoc' => $matchConvoc,'role' => $this->session->getRole()));
@@ -95,6 +130,27 @@ class ControleurConvocation extends ControleurSession {
     public function informationsConvocation($numConvoc) {
         $convocation = $this->convocation->getConvocation($numConvoc);
         $joueursConvoques = $this->convocation->getJoueursConvoques($numConvoc);
+        $joueursNonConvocables = $this->convocation->getJoueursNonConvocables($numConvoc);
+
+        $estValide = true;
+        foreach ($joueursConvoques as &$j) {
+            $absent = $this->absence->isAbsent($j['IdJoueur'], $convocation['Date']);
+            if ($absent) {
+                $estValide = false;
+                $j = array_merge($j, array('absent' => $absent ));
+            }
+            else {
+                $estPresent = !empty(array_filter($joueursNonConvocables, function ($joueur) use ($j) {
+                    return $joueur['IdJoueur'] === $j['IdJoueur'];
+                }));
+                if ($estPresent) {
+                    $j = array_merge($j, array('absent' => array('Motif' => 'Déjà convoqué')));
+                    $estValide = false;
+                }
+            }
+        }
+        $convocation = array_merge($convocation, array('valide' => $estValide));
+
         $vue = new Vue("InformationsConvocation");
         $vue->generer(array('convocation' => $convocation, 'joueursConvoques' => $joueursConvoques, 'role' => $this->session->getRole()));
     }
@@ -109,13 +165,12 @@ class ControleurConvocation extends ControleurSession {
      * @param $numMatch     L'identifiant du match lié à la convocation.
      * @param $ensIdJoueur  L'ensemble des joueurs convoqués.
      */
-    public function modifierConvocation($numConvoc, $numMatch,$ensIdJoueur) {
+    public function modifierConvocation($numConvoc,$ensIdJoueur) {
         if ($this->session->estEntraineur()) {
             $this->convocation->supprimerJoueursConvoques($numConvoc);
             foreach ($ensIdJoueur as $idJoueur) {
                 $this->convocation->ajouterJoueurConvoque($numConvoc, $idJoueur);
             }
-            $this->convocation->modifierConvocation($numConvoc, $numMatch);
             header("Location:index.php?action=convocation");
         }
         else if ($this->session->estSecretaire()) {

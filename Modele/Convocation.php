@@ -109,7 +109,7 @@ class Convocation extends Modele {
             . ' OR IdJoueur IN '
             . '(SELECT CJ.IdJoueur'
             . ' FROM (T_CONVOCATION_JOUEUR CJ JOIN T_CONVOCATION C ON CJ.NumConvoc = C.NumConvoc) JOIN T_MATCH M ON C.NumMatch = M.NumMatch '
-            . 'WHERE C.NumConvoc <> ? AND Date = (SELECT Date FROM T_CONVOCATION C JOIN T_MATCH M ON C.NumMatch = M.NumMatch WHERE NumConvoc = ?))';
+            . ' WHERE C.NumConvoc <> ? AND Date = (SELECT Date FROM T_CONVOCATION C JOIN T_MATCH M ON C.NumMatch = M.NumMatch WHERE NumConvoc = ?))';
         $convocationsMatch = $this->executerRequete($sql, array($numConvoc,$numConvoc,$numConvoc));
         return $convocationsMatch->fetchAll();
     }
@@ -206,18 +206,6 @@ class Convocation extends Modele {
         $sql = 'DELETE FROM T_CONVOCATION_JOUEUR'
             . ' WHERE IdJoueur = ?';
         $this->executerRequete($sql, array($idJoueur));
-    }
-
-    /**
-     * Modifie la convocation.
-     *
-     * @param $numConvoc    L'identifiant convocation à modifier.
-     * @param $numMatch     L'identifiant du nouveau match associé à la convocation.
-     */
-    public function modifierConvocation($numConvoc, $numMatch) {
-        $sql = 'UPDATE T_CONVOCATION'
-            . ' SET NumMatch = ? WHERE NumConvoc = ?';
-        $this->executerRequete($sql, array($numMatch,$numConvoc));
     }
 
 }

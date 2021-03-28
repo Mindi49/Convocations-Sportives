@@ -14,15 +14,8 @@
     <h1 class="mb-3">Modifier une convocation</h1>
     <form method="post" action="index.php?action=modifierConvocation">
         <div class="form-group row mb-3">
-            <label for="convocationMatch" class="col-1 col-form-label">Match : </label>
-            <div class="col-7">
-                <select name="numMatch" id="convocationMatch" class="form-select">
-                    <option value="{{ matchConvoc['NumMatch'] }}" selected>{{ matchConvoc['Equipe'] }} (le {{ matchConvoc['Date']|date("d/m/Y") }}) - {{ matchConvoc['Competition'] }}  à {{ matchConvoc['Site'] }}</option>
-                    {% for match in matchsConvocables %}
-                        <option value="{{ match['NumMatch'] }}">{{ match['Equipe'] }} ({{ match['Date']|date("d/m/Y") }}) - {{ match['Competition'] }} à {{ match['Site'] }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            <label class="form-label">Match : {{ matchConvoc['Equipe'] }} (le {{ matchConvoc['Date']|date("d/m/Y") }}) - {{ matchConvoc['Competition'] }}  à {{ matchConvoc['Site'] }}</label>
+            <input type="hidden" name="numMatch" value="{{ matchConvoc['NumMatch'] }}" />
         </div>
 
         <div id="joueursConvoques">

@@ -31,11 +31,11 @@
     </div>
     <div class="col-8">
         <table class="table border table-striped table-hover">
-
             {% for convocationPubliee in convocationsPubliees %}
                 <tr>
                     <td><a href="index.php?action=informationsConvocation&num={{ convocationPubliee['NumConvoc'] }}" class="btn text-center" role="button" style="text-align: left; width: 100%">
-                            {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date']|date("d/m/Y") }}) - {{ convocationPubliee['Competition'] }} à {{ convocationPubliee['Site'] }}</a></td>
+                            {{ convocationPubliee['Equipe'] }} (le {{ convocationPubliee['Date']|date("d/m/Y") }}) - {{ convocationPubliee['Competition'] }} à {{ convocationPubliee['Site'] }}</a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

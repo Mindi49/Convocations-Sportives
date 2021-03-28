@@ -188,7 +188,6 @@ class Routeur {
                         break;
                     case 'modifierConvocation' :
                         $numConvocation = $this->getParametre($_POST, 'num');
-                        $numMatch = $this->getParametre($_POST, 'numMatch');
                         $ensIdJoueur = array();
                         for ($i = 1; $i < 15; $i++) {
                             $idJoueur = $this->getParametre($_POST, 'idJoueur' . $i);
@@ -196,7 +195,7 @@ class Routeur {
                                 array_push($ensIdJoueur, $idJoueur);
                             }
                         }
-                        $this->ctrlConvocation->modifierConvocation($numConvocation, $numMatch, $ensIdJoueur);
+                        $this->ctrlConvocation->modifierConvocation($numConvocation, $ensIdJoueur);
                         header("Location:index.php?action=convocation");
                                 break;
                     case 'publier' :

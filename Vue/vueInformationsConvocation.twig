@@ -11,6 +11,15 @@
 
 {% block contenu %}
 
+{% if not convocation['valide'] %}
+<div class="row pt-5">
+    <div class="alert alert-danger alert-dismissible fade show col" role="alert">
+        <strong>Attention :</strong> Cette certains joueurs absents sont convoqués. La convocation devra être mise à jour pour pouvoir être publiée ou republiée.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+{% endif %}
+
 <div class="row pt-5">
     <div class="col-6">
         <h1 class="mb-3">Convocation pour le match : </h1>
@@ -62,6 +71,7 @@
                     <th>#</th>
                     <th>Prénom</th>
                     <th>Nom</th>
+                    <th>Présence</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -70,6 +80,7 @@
                         <th>{{ ind + 1 }}</th>
                         <td>{{ joueurConvoque['Prenom'] }}</td>
                         <td>{{ joueurConvoque['Nom'] }}</td>
+                        {% if joueurConvoque['absent'] %}<td><span class="badge bg-danger">{{ joueurConvoque['absent']['Motif'] }}</span></td>{% else %} <td><span class="badge bg-success">Disponible</td>{% endif %}
                     </tr>
                 {% else %}
                     <tr>
