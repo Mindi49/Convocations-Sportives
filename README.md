@@ -23,7 +23,11 @@ Enter password:
 Enter password:
 ```
 
+- Les identifiants et mot de passe de la base de donnée se trouvent dans le fichier `BD/config.ini`.
+
+
 ## Informations complémentaires
+
 
 Pour se connecter sur le site en tant que :
 - Secrétaire :
@@ -37,3 +41,6 @@ Nom d'utilisateur	: Deschamps
 Mot de passe		: didou
 ```
 
+
+## Liens utiles 
+L'ensemble des fichiers ainsi que les autres versions sont disponibles sur [GitHub](https://github.com/Mindi49/Convocations-Sportives).
